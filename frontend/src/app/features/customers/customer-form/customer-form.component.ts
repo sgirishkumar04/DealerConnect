@@ -100,10 +100,10 @@ export class CustomerFormComponent implements OnInit {
   form = this.fb.group({
     customerCode: ['', Validators.required], firstName: ['', Validators.required],
     lastName: ['', Validators.required], phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    alternatePhone: ['', Validators.pattern('^$|^[0-9]{10}$')], email: ['', Validators.email], gender: [''],
+    alternatePhone: ['', Validators.pattern('^[0-9]{10}$')], email: ['', Validators.email], gender: [''],
     customerType: ['INDIVIDUAL'], panNumber: [''], companyName: [''], gstNumber: [''],
     // Address fields
-    line1: [''], city: [''], state: [''], pincode: ['', Validators.pattern('^$|^[1-9][0-9]{5}$')]
+    line1: [''], city: [''], state: [''], pincode: ['', Validators.pattern('^[1-9][0-9]{5}$')]
   });
   isEdit = false; customerId: number | null = null;
 
@@ -171,6 +171,17 @@ export class CustomerFormComponent implements OnInit {
     const obs = this.isEdit
       ? this.api.updateCustomer(this.customerId!, payload)
       : this.api.createCustomer(payload);
-    obs.subscribe(() => { this.snack.open('Saved!', 'OK', {duration:3000}); this.router.navigate(['/customers']); });
+      
+    obs.subscribe({
+      next: () => { 
+        this.snack.open('Customer saved successfully!', 'OK', {duration:3000}); 
+        this.router.navigate(['/customers']); 
+      },
+      error: (err) => {
+        console.error('Customer Error:', err);
+        const msg = err.error?.message || 'Error saving customer. Might be a duplicate or system issue.';
+        this.snack.open(msg, 'Close', { duration: 5000 });
+      }
+    });
   }
 }
