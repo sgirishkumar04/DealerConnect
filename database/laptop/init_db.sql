@@ -393,8 +393,8 @@ INSERT INTO suppliers (name, contact_name, phone, email) VALUES
 
 -- 4. Dealers
 INSERT INTO dealers (dealer_code, name, city, state, contact_name, contact_email, status)
-VALUES ('DLR-CHN-001', 'Hyundai Chennai', 'Chennai', 'Tamil Nadu', 'S Girish Kumar', 'admin@hyundaidms.in', 'APPROVED'),
-       ('DLR-CBE-001', 'Hyundai Coimbatore', 'Coimbatore', 'Tamil Nadu', 'Prachi Sharma', 'prachi.admin@hyundaidms.in', 'APPROVED');
+VALUES ('DLR-CHN-001', 'Hyundai Chennai', 'Chennai', 'Tamil Nadu', 'S Girish Kumar', 'admin@hyundaidms.in', 'ACTIVE'),
+       ('DLR-CBE-001', 'Hyundai Coimbatore', 'Coimbatore', 'Tamil Nadu', 'Prachi Sharma', 'prachi.admin@hyundaidms.in', 'ACTIVE');
 
 SET @dealer1 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CHN-001' LIMIT 1);
 SET @dealer2 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CBE-001' LIMIT 1);
