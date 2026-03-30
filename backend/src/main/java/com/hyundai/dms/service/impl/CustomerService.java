@@ -152,6 +152,11 @@ public class CustomerService {
     public String generateNextCode() {
         Long dealerId = DealerContext.getCurrentDealerId();
         long count = customerRepo.countByDealerId(dealerId);
-        return String.format("CST-DLR%02d-%04d", dealerId, count + 1);
+        String code;
+        do {
+            count++;
+            code = String.format("CST-DLR%02d-%04d", dealerId, count);
+        } while (customerRepo.existsByCustomerCodeAndDealerId(code, dealerId));
+        return code;
     }
 }
