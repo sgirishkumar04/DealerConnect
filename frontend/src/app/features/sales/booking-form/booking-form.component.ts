@@ -329,7 +329,11 @@ export class BookingFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.snack.open('Please fix the errors in the form before submitting', 'Close', { duration: 4000 });
+      return;
+    }
     this.saving = true;
 
     const val = this.form.value;

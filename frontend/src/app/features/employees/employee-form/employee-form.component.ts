@@ -164,7 +164,7 @@ export class EmployeeFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.pattern('^[0-9]{10}$')]],
+      phone: ['', [Validators.pattern('^$|^[0-9]{10}$')]],
       departmentId: ['', Validators.required],
       roleId: ['', Validators.required],
       password: [''],
@@ -200,7 +200,11 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.snack.open('Please fix the errors in the form', 'Close', { duration: 3000 });
+      return;
+    }
     this.saving = true;
 
     const obs = this.isEdit

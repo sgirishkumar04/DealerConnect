@@ -100,10 +100,10 @@ export class CustomerFormComponent implements OnInit {
   form = this.fb.group({
     customerCode: ['', Validators.required], firstName: ['', Validators.required],
     lastName: ['', Validators.required], phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-    alternatePhone: ['', Validators.pattern('^[0-9]{10}$')], email: ['', Validators.email], gender: [''],
+    alternatePhone: ['', Validators.pattern('^$|^[0-9]{10}$')], email: ['', Validators.email], gender: [''],
     customerType: ['INDIVIDUAL'], panNumber: [''], companyName: [''], gstNumber: [''],
     // Address fields
-    line1: [''], city: [''], state: [''], pincode: ['', Validators.pattern('^[1-9][0-9]{5}$')]
+    line1: [''], city: [''], state: [''], pincode: ['', Validators.pattern('^$|^[1-9][0-9]{5}$')]
   });
   isEdit = false; customerId: number | null = null;
 
@@ -135,7 +135,11 @@ export class CustomerFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.snack.open('Please fix the errors in the form', 'Close', { duration: 3000 });
+      return;
+    }
     /*
    ### Final Multi-Tenant State
 - **Hyundai Chennai Admin**: Sees 85 leads, 39 in-stock vehicles, and historical revenue.
