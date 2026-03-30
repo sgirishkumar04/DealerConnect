@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS dealers (
     contact_name    VARCHAR(150),
     contact_phone   VARCHAR(20),
     contact_email   VARCHAR(150),
-    status          ENUM('PENDING','APPROVED','DECLINED') NOT NULL DEFAULT 'PENDING',
+    status          ENUM('PENDING','ACTIVE','DECLINED','DEACTIVATED') NOT NULL DEFAULT 'PENDING',
     created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS dealer_registrations (
     admin_email     VARCHAR(150) NOT NULL UNIQUE,
     admin_full_name VARCHAR(150) NOT NULL,
     admin_password_hash VARCHAR(255) NOT NULL,
-    status          ENUM('PENDING','APPROVED','DECLINED') NOT NULL DEFAULT 'PENDING',
+    status          ENUM('PENDING','ACTIVE','DECLINED','DEACTIVATED') NOT NULL DEFAULT 'PENDING',
     rejection_reason TEXT,
     reviewed_at     DATETIME,
     dealer_id       BIGINT,
