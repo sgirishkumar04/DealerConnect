@@ -5,6 +5,7 @@
 
 USE hyundai_dms;
 SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_SAFE_UPDATES = 0;
 
 -- 1. Infrastructure Mapping (Dealer #1 - Hyundai Chennai)
 SET @dealer1 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CHN-001' LIMIT 1);
