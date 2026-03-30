@@ -49,6 +49,7 @@ import { Role, Department } from '../../../core/models/models';
                   <mat-label>Phone Number</mat-label>
                   <input matInput formControlName="phone">
                   <mat-icon matSuffix>phone</mat-icon>
+                  <mat-error *ngIf="form.get('phone')?.hasError('pattern')">Valid 10-digit number required</mat-error>
                 </mat-form-field>
               </div>
             </mat-card-content>
@@ -163,7 +164,7 @@ export class EmployeeFormComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [''],
+      phone: ['', [Validators.pattern('^[0-9]{10}$')]],
       departmentId: ['', Validators.required],
       roleId: ['', Validators.required],
       password: [''],

@@ -59,6 +59,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map, catchError } from '
                   <mat-form-field appearance="outline">
                     <mat-label>Phone Number</mat-label>
                     <input matInput formControlName="customerPhone">
+                    <mat-error *ngIf="form.get('customerPhone')?.hasError('pattern')">Valid 10-digit number required</mat-error>
                   </mat-form-field>
                 </div>
               </mat-card-content>
@@ -234,7 +235,7 @@ export class BookingFormComponent implements OnInit {
     this.form = this.fb.group({
       customerId: [null],
       customerName: [''],
-      customerPhone: [''],
+      customerPhone: ['', [Validators.pattern('^[0-9]{10}$')]],
       vehicleId: ['', Validators.required],
       salesExecId: ['', Validators.required],
       exShowroom: [0, [Validators.required, Validators.min(1000)]],
@@ -291,7 +292,7 @@ export class BookingFormComponent implements OnInit {
     if (this.customerMode === 'NEW') {
       this.form.get('customerId')?.clearValidators();
       this.form.get('customerName')?.setValidators(Validators.required);
-      this.form.get('customerPhone')?.setValidators(Validators.required);
+      this.form.get('customerPhone')?.setValidators([Validators.required, Validators.pattern('^[0-9]{10}$')]);
     } else {
       this.form.get('customerId')?.setValidators(Validators.required);
       this.form.get('customerName')?.clearValidators();

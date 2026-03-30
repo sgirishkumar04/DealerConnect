@@ -27,9 +27,13 @@ import { ApiService } from '../../../core/services/api.service';
             
             <div class="form-row">
               <mat-form-field appearance="outline"><mat-label>Phone</mat-label>
-                <input matInput formControlName="phone"></mat-form-field>
+                <input matInput formControlName="phone">
+                <mat-error *ngIf="form.get('phone')?.hasError('pattern')">Valid 10-digit number required</mat-error>
+              </mat-form-field>
               <mat-form-field appearance="outline"><mat-label>Alternate Phone</mat-label>
-                <input matInput formControlName="alternatePhone"></mat-form-field>
+                <input matInput formControlName="alternatePhone">
+                <mat-error *ngIf="form.get('alternatePhone')?.hasError('pattern')">Valid 10-digit number required</mat-error>
+              </mat-form-field>
               <mat-form-field appearance="outline"><mat-label>Email</mat-label>
                 <input matInput formControlName="email" type="email"></mat-form-field>
             </div>
@@ -77,7 +81,9 @@ import { ApiService } from '../../../core/services/api.service';
                 <input matInput formControlName="state"></mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Pincode</mat-label>
-                <input matInput formControlName="pincode"></mat-form-field>
+                <input matInput formControlName="pincode">
+                <mat-error *ngIf="form.get('pincode')?.hasError('pattern')">Valid 6-digit PIN required</mat-error>
+              </mat-form-field>
             </div>
           </div>
 
@@ -93,11 +99,11 @@ import { ApiService } from '../../../core/services/api.service';
 export class CustomerFormComponent implements OnInit {
   form = this.fb.group({
     customerCode: ['', Validators.required], firstName: ['', Validators.required],
-    lastName: ['', Validators.required], phone: ['', Validators.required],
-    alternatePhone: [''], email: ['', Validators.email], gender: [''],
+    lastName: ['', Validators.required], phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+    alternatePhone: ['', Validators.pattern('^[0-9]{10}$')], email: ['', Validators.email], gender: [''],
     customerType: ['INDIVIDUAL'], panNumber: [''], companyName: [''], gstNumber: [''],
     // Address fields
-    line1: [''], city: [''], state: [''], pincode: ['']
+    line1: [''], city: [''], state: [''], pincode: ['', Validators.pattern('^[1-9][0-9]{5}$')]
   });
   isEdit = false; customerId: number | null = null;
 

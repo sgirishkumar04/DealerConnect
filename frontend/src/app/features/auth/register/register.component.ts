@@ -117,6 +117,7 @@ import { environment } from '../../../../environments/environment';
               <mat-label>Contact Phone</mat-label>
               <input matInput formControlName="contactPhone">
               <mat-error *ngIf="f['contactPhone'].hasError('required')">Required</mat-error>
+              <mat-error *ngIf="f['contactPhone'].hasError('pattern')">Valid 10-digit number required</mat-error>
             </mat-form-field>
           </div>
 
@@ -176,7 +177,7 @@ export class RegisterComponent {
     state:            ['', Validators.required],
     address:          [''],
     gstNumber:        [''],
-    contactPhone:     ['', Validators.required],
+    contactPhone:     ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
     contactName:      [''],
     adminFullName:    ['', Validators.required],
     adminEmail:       ['', [Validators.required, Validators.email]],
