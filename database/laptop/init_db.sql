@@ -455,6 +455,8 @@ VALUES ('99999-00001', 'Oil Filter (Diesel)', 'MAINTENANCE', 450.00, @dealer1, 1
        ('99999-00002', 'Brake Pad Set - Front', 'BRAKES', 2850.00, @dealer1, 1);
 
 -- 8. SHOWROOM RECORDS (Data Presence)
+SET @salesexec1 = (SELECT id FROM employees WHERE employee_code = 'CHN-EXE-001' LIMIT 1);
+
 INSERT INTO customers (customer_code, first_name, last_name, phone, email, dealer_id) 
 VALUES ('CHN-C001', 'Arun', 'Kumar', '9840012345', 'arun@test.com', @dealer1),
        ('CHN-C002', 'Priya', 'Sundar', '9840067890', 'priya@test.com', @dealer1);
