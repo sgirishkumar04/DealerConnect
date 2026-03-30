@@ -8,8 +8,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Infrastructure Mapping (Dealer #1 - Hyundai Chennai)
 SET @dealer1 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CHN-001' LIMIT 1);
-SET @salesexec1 = (SELECT id FROM employees WHERE employee_code = 'SE001' LIMIT 1);
-SET @admin1 = (SELECT id FROM employees WHERE employee_code = 'DA001' LIMIT 1);
+SET @salesexec1 = (SELECT id FROM employees WHERE employee_code = 'CHN-EXE-001' LIMIT 1);
+SET @admin1 = (SELECT id FROM employees WHERE employee_code = 'CHN-ADM-001' LIMIT 1);
 
 -- 2. Master Data Mapping (IDs)
 SET @src_walkin = (SELECT id FROM lead_sources WHERE name = 'Walk-In' LIMIT 1);

@@ -400,37 +400,37 @@ SET @dealer1 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CHN-001' LIMIT 1
 SET @dealer2 = (SELECT id FROM dealers WHERE dealer_code = 'DLR-CBE-001' LIMIT 1);
 
 -- 5. Users (Credentials)
--- Super Admin (Global)
+-- Super Admin (Global - Platform Level)
 INSERT INTO employees (employee_code, first_name, last_name, email, password_hash, department_id, role_id, is_active)
-SELECT 'SA001', 'DMS', 'SuperAdmin', 'superadmin@hyundaidms.in', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBZAVHLdmY6/Ky', 4, 1, 1;
+SELECT 'SUP-ADM-001', 'DMS', 'SuperAdmin', 'superadmin@hyundaidms.in', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBZAVHLdmY6/Ky', 4, 1, 1;
 
--- Dealer 1 (Chennai) - Staff Roster
+-- Dealer 1 (Chennai) - Professional Staff Roster
 INSERT INTO employees (employee_code, first_name, last_name, email, password_hash, department_id, role_id, dealer_id, is_active)
 VALUES 
-('DA001', 'Girish', 'ShowroomAdmin', 'admin@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 4, 2, @dealer1, 1),
-('SM001', 'Vikram', 'Rao', 'vikram.sm@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 3, @dealer1, 1),
-('SE001', 'Rahul', 'Varma', 'rahul.v@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer1, 1),
-('SE011', 'Priya', 'Dharshini', 'priya.d@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer1, 1),
-('SA001', 'Murali', 'Krishnan', 'murali.sa@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 5, @dealer1, 1),
-('MC001', 'Suresh', 'Mechanic', 'suresh.mech@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 6, @dealer1, 1),
-('AC001', 'Lakshmi', 'Iyer', 'lakshmi.ac@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 5, 8, @dealer1, 1),
-('IM001', 'Manikandan', 'S', 'mani.im@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 3, 7, @dealer1, 1);
+('CHN-ADM-001', 'Girish', 'ShowroomAdmin', 'admin@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 4, 2, @dealer1, 1),
+('CHN-MGR-001', 'Vikram', 'Rao', 'vikram.sm@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 3, @dealer1, 1),
+('CHN-EXE-001', 'Rahul', 'Varma', 'rahul.v@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer1, 1),
+('CHN-EXE-002', 'Priya', 'Dharshini', 'priya.d@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer1, 1),
+('CHN-ADV-001', 'Murali', 'Krishnan', 'murali.sa@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 5, @dealer1, 1),
+('CHN-TEC-001', 'Suresh', 'Mechanic', 'suresh.mech@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 6, @dealer1, 1),
+('CHN-ACC-001', 'Lakshmi', 'Iyer', 'lakshmi.ac@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 5, 8, @dealer1, 1),
+('CHN-INV-001', 'Manikandan', 'S', 'mani.im@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 3, 7, @dealer1, 1);
 
--- Dealer 2 (Coimbatore) - Staff Roster
+-- Dealer 2 (Coimbatore) - Professional Staff Roster
 INSERT INTO employees (employee_code, first_name, last_name, email, password_hash, department_id, role_id, dealer_id, is_active)
 VALUES 
-('DA002', 'Prachi', 'ShowroomAdmin', 'prachi.admin@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 4, 2, @dealer2, 1),
-('SM002', 'Senthil', 'Raj', 'senthil.sm@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 3, @dealer2, 1),
-('SE002', 'Ananya', 'Shree', 'ananya.s@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer2, 1),
-('SE022', 'Karthik', 'Govind', 'karthik.g@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer2, 1),
-('SA002', 'Deepa', 'Lakshmi', 'deepa.sa@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 5, @dealer2, 1),
-('MC002', 'Rajesh', 'Tech', 'rajesh.mc@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 6, @dealer2, 1),
-('AC002', 'Vijay', 'Kumar', 'vijay.ac@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 5, 8, @dealer2, 1),
-('IM002', 'Sundar', 'Ram', 'sundar.im@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 3, 7, @dealer2, 1);
+('CBE-ADM-001', 'Prachi', 'ShowroomAdmin', 'prachi.admin@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 4, 2, @dealer2, 1),
+('CBE-MGR-002', 'Senthil', 'Raj', 'senthil.sm@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 3, @dealer2, 1),
+('CBE-EXE-001', 'Ananya', 'Shree', 'ananya.s@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer2, 1),
+('CBE-EXE-002', 'Karthik', 'Govind', 'karthik.g@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 1, 4, @dealer2, 1),
+('CBE-ADV-001', 'Deepa', 'Lakshmi', 'deepa.sa@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 5, @dealer2, 1),
+('CBE-TEC-001', 'Rajesh', 'Tech', 'rajesh.mc@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 2, 6, @dealer2, 1),
+('CBE-ACC-001', 'Vijay', 'Kumar', 'vijay.ac@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 5, 8, @dealer2, 1),
+('CBE-INV-001', 'Sundar', 'Ram', 'sundar.im@hyundaidms.in', '$2a$10$fV3zbeF.CshdKWhv.idCqe5VOfZ6/9S6F5WbZt.S/Ypbe8L6H9Z.i', 3, 7, @dealer2, 1);
 
 -- Link Mechanics to Mechanic table
 INSERT INTO mechanics (employee_id, speciality) 
-SELECT id, 'Engine & Transmission' FROM employees WHERE employee_code IN ('MC001', 'MC002');
+SELECT id, 'Engine & Transmission' FROM employees WHERE employee_code IN ('CHN-TEC-001', 'CBE-TEC-001');
 
 -- 6. Full Hyundai 2024/2025 Model Catalog
 INSERT INTO vehicle_models (model_code, model_name, segment, launch_year) VALUES 
