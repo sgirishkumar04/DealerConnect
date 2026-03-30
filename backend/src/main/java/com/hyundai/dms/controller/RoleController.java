@@ -28,6 +28,7 @@ public class RoleController {
     @PutMapping("/{id}/permissions")
     @PreAuthorize("hasAuthority('EMPLOYEES_EDIT')")
     @CacheEvict(cacheNames = "lookups", allEntries = true)
+    
     public ResponseEntity<Role> updateRolePermissions(
             @PathVariable Long id,
             @RequestBody List<Long> permissionIds) {
