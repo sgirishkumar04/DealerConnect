@@ -34,6 +34,8 @@ public class DataInitializer implements CommandLineRunner {
     private final BookingRepository bookingRepo;
     private final ServiceAppointmentRepository serviceRepo;
     private final InventoryLocationRepository locationRepo;
+    private final LeadSourceRepository leadSourceRepo;
+    private final VehicleModelRepository modelRepo;
     private final PasswordEncoder passwordEncoder;
 
     private static final String DEFAULT_PASSWORD  = "Password@123";
@@ -58,6 +60,12 @@ public class DataInitializer implements CommandLineRunner {
 
         if (employeeRepo.findByEmailAndIsActiveTrue(SUPER_ADMIN_EMAIL).isEmpty()) {
             seedSuperAdmin();
+        }
+
+        // Fix Migrated Databases: Automatically seed empty lookup tables for dropdowns!
+        if (leadSourceRepo.count() == 0) {
+            log.info("DataInitializer: Lookup tables empty – seeding Lead Sources, Models, etc. …");
+            seedLookupTables();
         }
 
         // Link existing entities to the first dealer if they don't have one
@@ -96,6 +104,24 @@ public class DataInitializer implements CommandLineRunner {
             .dealer(null)                      // SUPER_ADMIN has no specific dealer
             .isActive(true).build());
         log.info("DataInitializer: ✓ SUPER_ADMIN seeded. Login: {} / {}", SUPER_ADMIN_EMAIL, SUPER_ADMIN_PWD);
+    }
+
+    private void seedLookupTables() {
+        // Lead Sources
+        leadSourceRepo.save(LeadSource.builder().name("Walk-In").build());
+        leadSourceRepo.save(LeadSource.builder().name("Website").build());
+        leadSourceRepo.save(LeadSource.builder().name("Referral").build());
+        leadSourceRepo.save(LeadSource.builder().name("Social Media").build());
+        leadSourceRepo.save(LeadSource.builder().name("Call Center").build());
+
+        // Standard Hyundai Models
+        modelRepo.save(VehicleModel.builder().modelName("Creta").bodyType("SUV").build());
+        modelRepo.save(VehicleModel.builder().modelName("Venue").bodyType("Compact SUV").build());
+        modelRepo.save(VehicleModel.builder().modelName("Verna").bodyType("Sedan").build());
+        modelRepo.save(VehicleModel.builder().modelName("i20").bodyType("Hatchback").build());
+        modelRepo.save(VehicleModel.builder().modelName("Tucson").bodyType("Premium SUV").build());
+        
+        log.info("DataInitializer: ✓ Core Dropdown Lookups seeded.");
     }
 
     private void assignDefaultDealerToLegacyEntities() {
