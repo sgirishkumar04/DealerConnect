@@ -115,11 +115,11 @@ public class DataInitializer implements CommandLineRunner {
         leadSourceRepo.save(LeadSource.builder().name("Call Center").build());
 
         // Standard Hyundai Models
-        modelRepo.save(VehicleModel.builder().modelName("Creta").bodyType("SUV").build());
-        modelRepo.save(VehicleModel.builder().modelName("Venue").bodyType("Compact SUV").build());
-        modelRepo.save(VehicleModel.builder().modelName("Verna").bodyType("Sedan").build());
-        modelRepo.save(VehicleModel.builder().modelName("i20").bodyType("Hatchback").build());
-        modelRepo.save(VehicleModel.builder().modelName("Tucson").bodyType("Premium SUV").build());
+        modelRepo.save(VehicleModel.builder().modelCode("CR-01").modelName("Creta").segment("SUV").build());
+        modelRepo.save(VehicleModel.builder().modelCode("VN-02").modelName("Venue").segment("Compact SUV").build());
+        modelRepo.save(VehicleModel.builder().modelCode("VR-03").modelName("Verna").segment("Sedan").build());
+        modelRepo.save(VehicleModel.builder().modelCode("I2-04").modelName("i20").segment("Hatchback").build());
+        modelRepo.save(VehicleModel.builder().modelCode("TU-05").modelName("Tucson").segment("Premium SUV").build());
         
         log.info("DataInitializer: ✓ Core Dropdown Lookups seeded.");
     }
