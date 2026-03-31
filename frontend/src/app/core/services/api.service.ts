@@ -28,19 +28,19 @@ export class ApiService {
   updateRolePermissions(roleId: number, permissionIds: number[]): Observable<Role> {
     return this.http.put<Role>(`${this.base}/roles/${roleId}/permissions`, permissionIds);
   }
-  getDepartments(): Observable<Department[]>          { return this.http.get<Department[]>(`${this.base}/lookup/departments`); }
-  getModels(): Observable<VehicleModel[]>             { return this.http.get<VehicleModel[]>(`${this.base}/lookup/vehicle-models`); }
+  getDepartments(): Observable<Department[]>          { return this.http.get<Department[]>(`${this.base}/lookup/departments?t=${Date.now()}`); }
+  getModels(): Observable<VehicleModel[]>             { return this.http.get<VehicleModel[]>(`${this.base}/lookup/vehicle-models?t=${Date.now()}`); }
   getVariants(modelId?: number): Observable<VehicleVariant[]> {
-    const url = modelId ? `${this.base}/lookup/vehicle-variants/${modelId}` : `${this.base}/lookup/vehicle-variants`;
+    const url = modelId ? `${this.base}/lookup/vehicle-variants/${modelId}?t=${Date.now()}` : `${this.base}/lookup/vehicle-variants?t=${Date.now()}`;
     return this.http.get<VehicleVariant[]>(url);
   }
-  getColors(): Observable<Color[]>                    { return this.http.get<Color[]>(`${this.base}/lookup/colors`); }
-  getEngineTypes(): Observable<EngineType[]>          { return this.http.get<EngineType[]>(`${this.base}/lookup/engine-types`); }
-  getLocations(): Observable<InventoryLocation[]>     { return this.http.get<InventoryLocation[]>(`${this.base}/lookup/locations`); }
-  getLeadSources(): Observable<LeadSource[]>          { return this.http.get<LeadSource[]>(`${this.base}/lookup/lead-sources`); }
-  getSuppliers(): Observable<Supplier[]>              { return this.http.get<Supplier[]>(`${this.base}/lookup/suppliers`); }
-  getBanks(): Observable<Bank[]>                      { return this.http.get<Bank[]>(`${this.base}/lookup/banks`); }
-  getDealers(): Observable<any[]>                     { return this.http.get<any[]>(`${this.base}/dealers`); }
+  getColors(): Observable<Color[]>                    { return this.http.get<Color[]>(`${this.base}/lookup/colors?t=${Date.now()}`); }
+  getEngineTypes(): Observable<EngineType[]>          { return this.http.get<EngineType[]>(`${this.base}/lookup/engine-types?t=${Date.now()}`); }
+  getLocations(): Observable<InventoryLocation[]>     { return this.http.get<InventoryLocation[]>(`${this.base}/lookup/locations?t=${Date.now()}`); }
+  getLeadSources(): Observable<LeadSource[]>          { return this.http.get<LeadSource[]>(`${this.base}/lookup/lead-sources?t=${Date.now()}`); }
+  getSuppliers(): Observable<Supplier[]>              { return this.http.get<Supplier[]>(`${this.base}/lookup/suppliers?t=${Date.now()}`); }
+  getBanks(): Observable<Bank[]>                      { return this.http.get<Bank[]>(`${this.base}/lookup/banks?t=${Date.now()}`); }
+  getDealers(): Observable<any[]>                     { return this.http.get<any[]>(`${this.base}/dealers?t=${Date.now()}`); }
 
   // ── Employees ─────────────────────────────────────────────────
   getEmployees(params: any): Observable<Page<Employee>> {
