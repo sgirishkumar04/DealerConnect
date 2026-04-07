@@ -1,8 +1,8 @@
 -- ============================================================
---  HYUNDAI DMS - ADD "IN TRANSIT" VEHICLES PATCH
+--  DEALERCONNECT - ADD "IN TRANSIT" VEHICLES PATCH
 --  Adds 5 new vehicles currently in transit from factory
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 INSERT INTO vehicles (vin, engine_number, chassis_number, variant_id, color_id, location_id, status, created_at, mfg_date, arrival_date) VALUES

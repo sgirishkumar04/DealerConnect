@@ -1,4 +1,4 @@
-# 📊 Hyundai DMS Dashboard Explained
+# 📊 DealerConnect Dashboard Explained
 
 When presenting or explaining the Dashboard module, the best approach is to start from what the user sees on the screen (Frontend), explain how it asks for data (Backend API), and finally show where that data actually comes from (Database). 
 
@@ -24,7 +24,7 @@ The frontend is built using **Angular**, and it uses a library called **Chart.js
 ---
 
 ## 2. The Backend Layer (The Delivery Guy)
-*Where it lives: `backend/src/main/java/com/hyundai/dms/controller/ReportController.java` & others*
+*Where it lives: `backend/src/main/java/com/dealerconnect/dms/controller/ReportController.java` & others*
 
 The Spring Boot backend acts as the bridge. It receives the Angular requests, checks security, and asks the database for the numbers.
 

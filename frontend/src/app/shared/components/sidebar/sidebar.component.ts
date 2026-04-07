@@ -24,7 +24,7 @@ interface NavItem {
       <div class="sidebar-logo">
         <div class="logo-icon">H</div>
         <div class="logo-text" *ngIf="!collapsed">
-          <span class="logo-brand">Hyundai DMS</span>
+          <span class="logo-brand">DealerConnect</span>
           <span class="logo-sub">Dealer Management</span>
         </div>
       </div>

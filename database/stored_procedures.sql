@@ -1,7 +1,7 @@
 -- ============================================================
---  HYUNDAI DMS – Stored Procedures for Reports
+--  DEALERCONNECT – Stored Procedures for Reports
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 
 DELIMITER //
 

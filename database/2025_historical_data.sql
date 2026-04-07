@@ -1,7 +1,7 @@
 -- ============================================================
 -- 2025 HISTORICAL SALES DATA (FIXED SCHEMA)
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Insert a Pool of 200 Vehicles for 2025 Sales

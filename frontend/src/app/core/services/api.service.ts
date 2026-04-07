@@ -60,6 +60,9 @@ export class ApiService {
   createVehicle(data: any): Observable<Vehicle>       { return this.http.post<Vehicle>(`${this.base}/vehicles`, data); }
   updateVehicle(id: number, data: any): Observable<Vehicle> { return this.http.put<Vehicle>(`${this.base}/vehicles/${id}`, data); }
   deleteVehicle(id: number): Observable<void>         { return this.http.delete<void>(`${this.base}/vehicles/${id}`); }
+  updateVehicleStatus(id: number, status: string): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.base}/vehicles/${id}/status`, null, { params: { status } });
+  }
   getInventorySummary(): Observable<any[]>            { return this.http.get<any[]>(`${this.base}/vehicles/inventory-summary`); }
 
   // ── Customers ─────────────────────────────────────────────────

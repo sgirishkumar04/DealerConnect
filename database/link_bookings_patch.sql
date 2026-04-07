@@ -1,8 +1,8 @@
 -- ============================================================
---  HYUNDAI DMS - LINK BOOKINGS TO SOLD/ALLOCATED VEHICLES
+--  DEALERCONNECT - LINK BOOKINGS TO SOLD/ALLOCATED VEHICLES
 --  Links 35 specific vehicles to existing bookings
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 
 -- Link logic: Just mapping incrementally to booking IDs 1-35
 UPDATE bookings SET vehicle_id = 1 WHERE id = 1;

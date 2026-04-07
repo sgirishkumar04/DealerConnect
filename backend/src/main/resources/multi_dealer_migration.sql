@@ -1,10 +1,10 @@
 -- ═══════════════════════════════════════════════════════════════════
---  HYUNDAI DMS – MULTI-DEALER MIGRATION
---  Run this script ONCE against the hyundai_dms database.
+--  DEALERCONNECT – MULTI-DEALER MIGRATION
+--  Run this script ONCE against the dealerconnect database.
 --  Converts single-dealer to multi-dealer architecture.
 -- ═══════════════════════════════════════════════════════════════════
 
-USE hyundai_dms;
+USE dealerconnect;
 
 -- ───────────────────────────────────────────────────────────────────
 -- 1. DEALERS TABLE
@@ -98,7 +98,7 @@ ALTER TABLE vehicles
 INSERT IGNORE INTO dealers (dealer_code, name, city, state, address, gst_number, contact_name, contact_phone, contact_email, status)
 VALUES ('DLR-CHN-001', 'Hyundai Chennai', 'Chennai', 'Tamil Nadu',
         'No.1, Anna Salai, Chennai, TN 600002',
-        '33AABCH1234A1Z5', 'S Girish Kumar', '9000000001', 'admin@hyundaidms.in', 'APPROVED');
+        '33AABCH1234A1Z5', 'S Girish Kumar', '9000000001', 'admin@dealerconnect.com', 'APPROVED');
 
 -- ───────────────────────────────────────────────────────────────────
 -- 5. ASSIGN existing employees/customers/etc. to Dealer #1
@@ -116,7 +116,7 @@ UPDATE spare_parts        SET dealer_id = @dealer1_id WHERE dealer_id IS NULL;
 -- 6. INSERT: SUPER_ADMIN role
 -- ───────────────────────────────────────────────────────────────────
 INSERT IGNORE INTO roles (name, description, created_at)
-VALUES ('SUPER_ADMIN', 'Hyundai DMS Platform Administrator', NOW());
+VALUES ('SUPER_ADMIN', 'DealerConnect Platform Administrator', NOW());
 
 -- ───────────────────────────────────────────────────────────────────
 -- 7. INSERT: SUPER_ADMIN employee (platform owner, no dealer)
@@ -125,7 +125,7 @@ VALUES ('SUPER_ADMIN', 'Hyundai DMS Platform Administrator', NOW());
 INSERT IGNORE INTO employees (employee_code, first_name, last_name, email, phone, password_hash,
                                department_id, role_id, date_of_join, is_active, dealer_id, created_at, updated_at)
 SELECT 'SA001', 'DMS', 'SuperAdmin',
-       'superadmin@hyundaidms.in', '9000000000',
+       'superadmin@dealerconnect.com', '9000000000',
        '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBZAVHLdmY6/Ky',   -- SuperAdmin@123
        d.id, r.id,
        '2024-01-01', 1, NULL, NOW(), NOW()
@@ -250,5 +250,5 @@ DELIMITER ;
 
 -- ═══════════════════════════════════════════════════════════════════
 --  MIGRATION COMPLETE
---  SUPER_ADMIN login: superadmin@hyundaidms.in / SuperAdmin@123
+--  SUPER_ADMIN login: superadmin@dealerconnect.com / SuperAdmin@123
 -- ═══════════════════════════════════════════════════════════════════

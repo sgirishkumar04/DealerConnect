@@ -14,7 +14,7 @@ import { roleHome } from '../../../core/guards/auth.guard';
         <!-- Brand -->
         <div class="login-brand">
           <div class="brand-logo">H</div>
-          <h1>Hyundai DMS</h1>
+          <h1>DealerConnect</h1>
           <p>Dealer Management System — Sign in to continue</p>
         </div>
 
@@ -59,7 +59,7 @@ import { roleHome } from '../../../core/guards/auth.guard';
             New dealership? <a routerLink="/login/register" style="color:var(--hd-blue); font-weight:600; text-decoration:none">Register Here</a>
           </div>
           <div style="font-size:.7rem; color:var(--text-muted)">
-            © 2026 Hyundai Motor India · Dealer Management System
+            © 2026 DealerConnect Motor India · Dealer Management System
           </div>
         </div>
       </div>

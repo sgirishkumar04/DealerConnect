@@ -141,7 +141,22 @@ import { AuthService } from '../../../core/services/auth.service';
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
             <td mat-cell *matCellDef="let v">
-              <span [class]="'badge ' + statusClass(v.status)">{{v.status | titlecase}}</span>
+              <div (click)="$event.stopPropagation()" style="min-width: 120px">
+                <mat-select *ngIf="canEdit; else staticStatus"
+                            [value]="v.status"
+                            (selectionChange)="updateVehicleStatus(v, $event.value)"
+                            class="inline-status-select"
+                            [class]="statusClass(v.status)">
+                  <mat-option value="IN_STOCK">In Stock</mat-option>
+                  <mat-option value="ALLOCATED">Allocated</mat-option>
+                  <mat-option value="SOLD">Sold</mat-option>
+                  <mat-option value="DEMO">Demo</mat-option>
+                  <mat-option value="IN_TRANSIT">In Transit</mat-option>
+                </mat-select>
+                <ng-template #staticStatus>
+                  <span [class]="'badge ' + statusClass(v.status)">{{v.status | titlecase}}</span>
+                </ng-template>
+              </div>
             </td>
           </ng-container>
 
@@ -204,6 +219,19 @@ import { AuthService } from '../../../core/services/auth.service';
     .clickable-row:hover { background-color: rgba(0, 43, 92, 0.04) !important; }
     .action-btns button { transition: transform 0.2s; }
     .action-btns button:hover { transform: scale(1.1); }
+    
+    ::ng-deep .inline-status-select .mat-mdc-select-value { 
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    ::ng-deep .inline-status-select {
+      padding: 4px 10px; border-radius: 6px; border: none; height: auto !important;
+    }
+    ::ng-deep .inline-status-select.badge-green { background: #dcfce7; color: #166534; }
+    ::ng-deep .inline-status-select.badge-blue { background: #dbeafe; color: #1e40af; }
+    ::ng-deep .inline-status-select.badge-grey { background: #f3f4f6; color: #374151; }
+    ::ng-deep .inline-status-select.badge-cyan { background: #ecfeff; color: #0891b2; }
+    ::ng-deep .inline-status-select.badge-yellow { background: #fef9c3; color: #854d0e; }
+    ::ng-deep .inline-status-select.badge-purple { background: #f3e8ff; color: #6b21a8; }
   `]
 })
 export class VehicleListComponent implements OnInit {
@@ -334,6 +362,19 @@ export class VehicleListComponent implements OnInit {
     if (days <= 30) return 'badge-green';
     if (days <= 60) return 'badge-orange';
     return 'badge-red';
+  }
+
+  updateVehicleStatus(v: any, newStatus: string) {
+    this.api.updateVehicleStatus(v.id, newStatus).subscribe({
+      next: () => {
+        v.status = newStatus;
+        this.snack.open('Status updated successfully', 'Close', { duration: 2000 });
+      },
+      error: (err) => {
+        this.snack.open('Failed to update status', 'Close', { duration: 3000 });
+        console.error(err);
+      }
+    });
   }
 
   statusClass(s: string): string {

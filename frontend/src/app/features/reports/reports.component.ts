@@ -509,7 +509,7 @@ export class ReportsComponent implements OnInit {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Hyundai_Sales_Report_${new Date().getTime()}.csv`);
+    link.setAttribute("download", `DealerConnect_Sales_Report_${new Date().getTime()}.csv`);
     document.body.appendChild(link);
     link.click();
     

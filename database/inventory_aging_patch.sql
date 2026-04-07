@@ -1,10 +1,10 @@
 -- ============================================================
---  HYUNDAI DMS - ADD AGING TEST VEHICLES PATCH
+--  DEALERCONNECT - ADD AGING TEST VEHICLES PATCH
 --  Adds 3 new IN_STOCK vehicles with specific manufacturing 
 --  dates (relative to 2026-03-15) to demonstrate the Inventory
 --  Aging highlights (Normal, Warning, Critical)
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 INSERT INTO vehicles (vin, engine_number, chassis_number, variant_id, color_id, location_id, status, created_at, mfg_date, arrival_date) VALUES

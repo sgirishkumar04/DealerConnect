@@ -47,4 +47,4 @@ tmp/
 temp/
 
 # Compiled SQL (Allowing full migration for sync)
-# database/hyundai_dms_full_migration.sql
+# database/dealerconnect_dms_full_migration.sql

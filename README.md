@@ -1,7 +1,7 @@
-# Hyundai Dealer Management System (DMS) — SaaS Edition
+# DealerConnect Dealer Management System (DMS) — SaaS Edition
 
 > **Production-Ready, Multi-Dealer, Full-Stack Automobile Showroom Platform.**
-> This project is designed to manage every aspect of a Hyundai dealership, from the first customer enquiry to the final vehicle delivery and long-term service maintenance.
+> This project is designed to manage every aspect of a DealerConnect dealership, from the first customer enquiry to the final vehicle delivery and long-term service maintenance.
 
 ---
 
@@ -33,10 +33,10 @@ Follow these 4 steps to set up the project on your new machine.
 
 ### 1. Database Initialization
 Navigate to `database/laptop/` and run these 4 scripts in order on your MySQL instance:
-1.  **[schema.sql](file:///Users/sgirishkumar/Documents/Hyundai-DMS/database/laptop/schema.sql)**: Creates 37 tables, stored procedures, and initial roles.
-2.  **[chennai_2025_historical.sql](file:///Users/sgirishkumar/Documents/Hyundai-DMS/database/laptop/chennai_2025_historical.sql)**: Loads 150+ professional records for last year's reports.
-3.  **[chennai_insert.sql](file:///Users/sgirishkumar/Documents/Hyundai-DMS/database/laptop/chennai_insert.sql)**: Loads active 2026 showroom data and workshop workload.
-4.  **[query.sql](file:///Users/sgirishkumar/Documents/Hyundai-DMS/database/laptop/query.sql)**: Use this as a reference manual for all application queries.
+1.  **[schema.sql](file:///Users/sgirishkumar/Documents/DealerConnect/database/laptop/schema.sql)**: Creates 37 tables, stored procedures, and initial roles.
+2.  **[chennai_2025_historical.sql](file:///Users/sgirishkumar/Documents/DealerConnect/database/laptop/chennai_2025_historical.sql)**: Loads 150+ professional records for last year's reports.
+3.  **[chennai_insert.sql](file:///Users/sgirishkumar/Documents/DealerConnect/database/laptop/chennai_insert.sql)**: Loads active 2026 showroom data and workshop workload.
+4.  **[query.sql](file:///Users/sgirishkumar/Documents/DealerConnect/database/laptop/query.sql)**: Use this as a reference manual for all application queries.
 
 ### 2. Backend Setup
 1. Open `backend/src/main/resources/application.properties`.
@@ -64,16 +64,16 @@ Navigate to `database/laptop/` and run these 4 scripts in order on your MySQL in
 
 | User Level | Email | Password |
 |:---|:---|:---|
-| **Platform Super Admin** | `superadmin@hyundaidms.in` | `SuperAdmin@123` |
-| **Dealer Showroom Admin**| `admin@hyundaidms.in` | `Password@123` |
-| **Sales Executive** | `rahul.v@hyundaidms.in` | `Password@123` |
+| **Platform Super Admin** | `superadmin@dealerconnect.com` | `SuperAdmin@123` |
+| **Dealer Showroom Admin**| `admin@dealerconnect.com` | `Password@123` |
+| **Sales Executive** | `rahul.v@dealerconnect.com` | `Password@123` |
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-Hyundai-DMS/
+DealerConnect/
 ├── database/laptop/      ← 100% Comprehensive Migration Scripts (REQUIRED)
 ├── backend/              ← Spring Boot APIs, Security, and Business Logic
 │   ├── entity/           ← 30+ JPA Entities (Lead, Booking, Dealer, etc.)

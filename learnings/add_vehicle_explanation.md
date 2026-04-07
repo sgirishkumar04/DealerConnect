@@ -1,4 +1,4 @@
-# ➕ Hyundai DMS Add Vehicle Explained
+# ➕ DealerConnect Add Vehicle Explained
 
 When a salesperson clicks "Add Vehicle", a beautifully orchestrated sequence of events happens across the entire tech stack. Here is the step-by-step technical explanation on exactly how the Add Vehicle workflow functions.
 

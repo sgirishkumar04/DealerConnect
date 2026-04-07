@@ -2,10 +2,10 @@
 -- SQL Script: add_customer_missing_data.sql
 -- Description: Updates the 'customers' table and inserts into 'customer_addresses'
 --              to populate missing data like Gender, PAN, City, etc. for the
---              first 45 existing seed customers in the Hyundai DMS.
+--              first 45 existing seed customers in the DealerConnect.
 -- -----------------------------------------------------------------------------
 
-USE hyundai_dms;
+USE dealerconnect;
 
 -- 1. Update Customers Table (Add Gender, DOB, PAN, Aadhaar)
 UPDATE customers SET gender='MALE', pan_number='ABCDE1234F', date_of_birth='1985-06-15' WHERE customer_code='CUST0001';

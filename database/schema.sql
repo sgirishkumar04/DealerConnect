@@ -3,8 +3,8 @@
 --  Normalized to 3NF | All FKs & Indexes included
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS hyundai_dms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE hyundai_dms;
+CREATE DATABASE IF NOT EXISTS dealerconnect CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE dealerconnect;
 
 SET FOREIGN_KEY_CHECKS = 0;
 

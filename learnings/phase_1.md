@@ -1,4 +1,4 @@
-# 🚀 Hyundai DMS: Phase 1 Scalability Architecture & Code Validation
+# 🚀 DealerConnect: Phase 1 Scalability Architecture & Code Validation
 
 During Phase 1, we implemented five core architectural pillars specifically designed to handle **massive scale**. We didn't just build a simple "CRUD" app; we built an infrastructure capable of supporting a national dealer network immediately out of the box. 
 
@@ -8,12 +8,12 @@ Below is the executive summary of our scalability concepts, completely validated
 
 ## 1. True Multi-Tenancy (Data Isolation)
 **The Concept:** 
-If Hyundai opens 50 new dealerships, spinning up 50 separate databases and 50 separate servers is a dev-ops nightmare and extremely expensive. We designed the database so every core table (`vehicles`, `employees`, etc.) has a `dealer_id`. We can host 500 dealerships on a single, massive database. Dealership A can never see Dealership B's data.
+If DealerConnect opens 50 new dealerships, spinning up 50 separate databases and 50 separate servers is a dev-ops nightmare and extremely expensive. We designed the database so every core table (`vehicles`, `employees`, etc.) has a `dealer_id`. We can host 500 dealerships on a single, massive database. Dealership A can never see Dealership B's data.
 
 **The Code Proof:** 
 Instead of trusting the frontend to send the `dealerId` inside a hackable JSON payload, our Spring Boot backend inherently extracts the Dealer ID directly from the authenticated server context on every single request.
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/EmployeeService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/EmployeeService.java`:*
 ```java
 public Page<Employee> getAll(String search, Pageable pageable) {
     // 1. Instantly pull the Dealer ID from the secure JWT Thread Context
@@ -33,7 +33,7 @@ Traditional "Session-based" logins require the server's memory to continuously r
 **The Code Proof:**
 We explicitly told Spring Security to completely shut off "Server Sessions".
 
-*From `backend/src/main/java/com/hyundai/dms/security/SecurityConfig.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/security/SecurityConfig.java`:*
 ```java
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,7 +56,7 @@ Many Java applications fail at scale because they pull 50,000 rows out of the da
 **The Code Proof:**
 We map Java methods directly to highly-optimized MySQL Stored Procedures, bypassing Hibernate's slow Entity mapping entirely for heavy math.
 
-*From `backend/src/main/java/com/hyundai/dms/repository/ServiceAppointmentRepository.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/repository/ServiceAppointmentRepository.java`:*
 ```java
 public interface ServiceAppointmentRepository extends JpaRepository<ServiceAppointment, Long> {
 
@@ -110,7 +110,7 @@ When requesting a `Vehicle`, a poor backend accidentally serializes the entire r
 **The Code Proof:**
 When you click a Vehicle, we use a custom builder to craft a secure, flat `VehicleDetailsDTO` JSON object, physically stripping away unnecessary nested Database objects.
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/VehicleService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/VehicleService.java`:*
 ```java
 public VehicleDetailsDTO getVehicleDetails(Long id) {
     Vehicle v = getById(id);
@@ -138,7 +138,7 @@ In enterprise software, the server must inherently distrust the frontend. We exp
 1. **Authentication (Logging In):** When a user pushes their credentials to the server, we validate the password using high-grade `BCrypt` cryptographic hashing. We then generate an immutable, HMAC-SHA256 encrypted JWT token holding their permissions array.
 2. **Authorization (Endpoint Shielding):** We enforce Role-Based Access Control (RBAC) natively on the server endpoints. Even if a clever "Mechanic" attempts to hack the API to view Dealership Financial Revenue, Spring Security intercepts the packet and blocks it.
 
-*From `backend/src/main/java/com/hyundai/dms/controller/EmployeeController.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/controller/EmployeeController.java`:*
 ```java
 @PostMapping
 // 1. The @PreAuthorize Annotation physically blocks the endpoint.
@@ -173,7 +173,7 @@ Before a request even reaches our Java Controllers, it must pass through the Glo
 **The Code Proof:**
 We built a microscopic routing matrix in `SecurityConfig.java` that maps exactly which permissions map to which HTTP requests.
 
-*From `backend/src/main/java/com/hyundai/dms/config/SecurityConfig.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/config/SecurityConfig.java`:*
 ```java
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -204,7 +204,7 @@ If HTTP Security is the front door, **Method-Level Security** represents the loc
 **The Code Proof:**
 We enable this globally via `@EnableMethodSecurity` in our config. Then, we apply it dynamically to Controller endpoints that require deep, complex security checking that standard URL filtering can't handle.
 
-*From `backend/src/main/java/com/hyundai/dms/controller/EmployeeController.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/controller/EmployeeController.java`:*
 ```java
 @PostMapping
 // 1. The @PreAuthorize Annotation physically blocks the endpoint method from executing.
@@ -235,7 +235,7 @@ this.form = this.fb.group({
 });
 ```
 
-*From `backend/src/main/java/com/hyundai/dms/controller/CustomerController.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/controller/CustomerController.java`:*
 ```java
 @PostMapping
 // 1. The @Valid annotation forces Spring to evaluate the JSON against hardcoded data limits 
@@ -249,7 +249,7 @@ public ResponseEntity<Customer> create(@Valid @RequestBody CustomerRequest req) 
 
 ## 10. Performance (The Speed Engine)
 **The Concept:** 
-Scalability handles volume; **Performance** refers to latency (how fast the app feels). The Hyundai DMS achieves near-zero UI lag via asynchronous API fetching and optimized, batch database transactions.
+Scalability handles volume; **Performance** refers to latency (how fast the app feels). The DealerConnect achieves near-zero UI lag via asynchronous API fetching and optimized, batch database transactions.
 
 **The Code Proof:**
 1. **Asynchronous Parallel Loading:** When the Dashboard opens, it does not wait for "Cars Sold" to finish before asking the server for "Service Workload". It fires all 5 HTTP requests concurrently.
@@ -268,7 +268,7 @@ loadData() {
 }
 ```
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/VehicleService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/VehicleService.java`:*
 ```java
 @Transactional
 // 1. Spring opens exactly ONE fast database connection.
@@ -307,7 +307,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 }
 ```
 
-*From `backend/src/main/java/com/hyundai/dms/exception/GlobalExceptionHandler.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/exception/GlobalExceptionHandler.java`:*
 ```java
 @RestControllerAdvice
 // 1. Prevents Spring Boot from vomiting raw, dangerous Stack Traces to the user's browser payload.
@@ -364,7 +364,7 @@ When an application scales, users demand complex filtering. If an Inventory Mana
 **The Code Proof:**
 Instead of writing messy SQL string concatenations (`"SELECT * FROM " + table + " WHERE..."`), we instantiate a heavily-typed `BooleanBuilder`. QueryDSL automatically constructs the absolute perfect, optimized MySQL `WHERE` clause dynamically, directly preventing SQL Injection attacks.
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/VehicleService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/VehicleService.java`:*
 ```java
 public Page<Vehicle> getAll(String status, Long modelId, Pageable pageable) {
     // 1. QVehicle is physically generated by the compiler holding the database schema
@@ -420,9 +420,9 @@ ngOnInit() {
 If the Dealership's database is ever compromised, hackers must not be able to read user passwords. Storing passwords in plain-text is a catastrophic security failing. We implemented cryptographic **Hashing** to ensure mathematical irreversibility.
 
 **The Code Proof:**
-We utilized Spring Security's **BCrypt Password Encoder**. Before any password hits the database, it is "salted" and hashed. Even if two employees have the exact same password (`"Hyundai@123"`), the database strings will look completely different, preventing Rainbow Table attacks.
+We utilized Spring Security's **BCrypt Password Encoder**. Before any password hits the database, it is "salted" and hashed. Even if two employees have the exact same password (`"DealerConnect@123"`), the database strings will look completely different, preventing Rainbow Table attacks.
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/EmployeeService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/EmployeeService.java`:*
 ```java
 @Transactional
 public Employee create(EmployeeRequest req) {
@@ -450,7 +450,7 @@ When an API error occurs (e.g., searching for a Vehicle ID that doesn't exist), 
 **The Code Proof:**
 We wrote Custom Exceptions (`ResourceNotFoundException`) and a Centralized Exception Controller (`@RestControllerAdvice`). This guarantees that the Angular frontend never crashes trying to parse unpredictable errors, as it consistently receives `{ status: 404, message: "..." }`.
 
-*From `backend/src/main/java/com/hyundai/dms/exception/ResourceNotFoundException.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/exception/ResourceNotFoundException.java`:*
 ```java
 // 1. Custom Exception gracefully binds a mathematically missing entity to a 404 HTTP Code
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -461,7 +461,7 @@ public class ResourceNotFoundException extends RuntimeException {
 }
 ```
 
-*From `backend/src/main/java/com/hyundai/dms/exception/GlobalExceptionHandler.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/exception/GlobalExceptionHandler.java`:*
 ```java
 @RestControllerAdvice
 // 2. The Global Interceptor acts as a safety net spanning the entire application
@@ -480,13 +480,13 @@ public class GlobalExceptionHandler {
 
 ## 17. Caching (Internal & External Strategy)
 **The Concept:** 
-Database traffic is the single biggest bottleneck in any application. To achieve high performance, frequently read but rarely changed data (like the list of standard Hyundai "Car Models", "Lead Sources", or "Factory Colors") must be shielded from constant database `SELECT` queries. We implemented an extensible **Caching Architecture** covering both Internal memory optimization and External scalability.
+Database traffic is the single biggest bottleneck in any application. To achieve high performance, frequently read but rarely changed data (like the list of standard DealerConnect "Car Models", "Lead Sources", or "Factory Colors") must be shielded from constant database `SELECT` queries. We implemented an extensible **Caching Architecture** covering both Internal memory optimization and External scalability.
 
 **The Code Proof:**
 1. **Internal Caching (`@Cacheable`):** We utilized Spring Boot's native Cache manager. The absolute first time a user requests the dropdown list of Vehicle Colors, Java asks MySQL. For every single request after that, Java intercepts the logic and instantly returns the data from its internal RAM. 
 2. **External Caching Readiness:** Because we utilized the official `@Cacheable` abstraction instead of hardcoding raw Java `HashMaps`, the application is flawlessly prepared for an External Distributed Cache (like **Redis** or **Memcached**). When we scale to Phase 2, moving from internal server caching to a massive External Redis cluster requires zero Java logic rewrites; it only requires adding the Redis server URL into the `application.yml` file.
 
-*From `backend/src/main/java/com/hyundai/dms/service/impl/LookupService.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/service/impl/LookupService.java`:*
 ```java
 @Service
 public class LookupService {
@@ -543,7 +543,7 @@ As the dealership grows over 5 years, the Customer Database will radically excee
 **The Code Proof:**
 When the user's UI clicks to view "Page 3" of the Customer list, Angular sends specific mathematical coordinates (`page=2, size=10`) directly into the Java API. Spring Data JPA extracts these coordinates, dynamically injects `LIMIT 10 OFFSET 20` into the MySQL database query, and retrieves only those exact 10 rows! It wraps the JSON in a complex meta-data `Page` structure so the Frontend knows exactly how many total pages exist.
 
-*From `backend/src/main/java/com/hyundai/dms/controller/CustomerController.java`:*
+*From `backend/src/main/java/com/dealerconnect/dms/controller/CustomerController.java`:*
 ```java
 @GetMapping
 // 1. Spring Boot's Pageable engine automatically parses ?page=2&size=10 from the URL
@@ -569,4 +569,4 @@ onPageChange(event: PageEvent) {
 ---
 
 ### Phase 1 Conclusion
-By implementing **Stateless JWTs**, **Multi-Tenant Data Isolation**, **Database Delegation**, **DTO Network Optimization**, **Angular Client Compute**, **Zero-Trust HTTP/Method Guards**, **Dual Validation**, **System Reliability**, **Algorithmic UI Sorting**, **Type-Safe QueryDSL**, **CDK Responsiveness**, **BCrypt Encryption**, **Global Exceptional Handling**, **Extensible Caching**, **Material UI/UX Design Patterns**, and **Server-Side Pagination**, the Hyundai DMS achieves incredible server longevity, military-grade security, and dynamic device accessibility.
+By implementing **Stateless JWTs**, **Multi-Tenant Data Isolation**, **Database Delegation**, **DTO Network Optimization**, **Angular Client Compute**, **Zero-Trust HTTP/Method Guards**, **Dual Validation**, **System Reliability**, **Algorithmic UI Sorting**, **Type-Safe QueryDSL**, **CDK Responsiveness**, **BCrypt Encryption**, **Global Exceptional Handling**, **Extensible Caching**, **Material UI/UX Design Patterns**, and **Server-Side Pagination**, the DealerConnect achieves incredible server longevity, military-grade security, and dynamic device accessibility.

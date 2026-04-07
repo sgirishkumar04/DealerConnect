@@ -1,9 +1,9 @@
 -- ============================================================
---  HYUNDAI DMS - VEHICLE TECHNICAL DETAILS PATCH
+--  DEALERCONNECT - VEHICLE TECHNICAL DETAILS PATCH
 --  Fills engine_number, chassis_number, mfg_date, arrival_date
 --  for all 80 vehicle records
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 
 UPDATE vehicles SET engine_number='CRT-ENG-2025-0001', chassis_number='CRT-CHS-2025-0001', mfg_date='2024-10-15', arrival_date='2025-01-10' WHERE id=1;
 UPDATE vehicles SET engine_number='VNU-ENG-2025-0001', chassis_number='VNU-CHS-2025-0001', mfg_date='2024-11-20', arrival_date='2025-02-05' WHERE id=2;

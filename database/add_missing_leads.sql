@@ -1,4 +1,4 @@
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 INSERT INTO leads (lead_number, customer_id, source_id, assigned_to, preferred_model_id, preferred_variant_id, status) VALUES 

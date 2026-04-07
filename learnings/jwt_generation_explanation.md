@@ -8,7 +8,7 @@ Here is exactly where and how that token is forged in the code.
 
 ## The Origin File
 The exact file responsible for generating and signing tokens is:
-`backend/src/main/java/com/hyundai/dms/security/JwtTokenProvider.java`
+`backend/src/main/java/com/dealerconnect/dms/security/JwtTokenProvider.java`
 
 You can explain the process by breaking the file down into 3 critical steps.
 

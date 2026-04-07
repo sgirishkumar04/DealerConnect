@@ -1,4 +1,4 @@
-# 🔐 Hyundai DMS Login & Role Permissions Explained (RBAC)
+# 🔐 DealerConnect Login & Role Permissions Explained (RBAC)
 
 When you log into different accounts (like `Admin` vs. `Sales Manager`), the entire software physically reconstructs itself. Buttons disappear, pages get blocked, and the starting homepage changes entirely.
 

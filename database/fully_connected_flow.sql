@@ -1,4 +1,4 @@
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Create a Supplier

@@ -1,4 +1,4 @@
-# 🚗 Hyundai DMS Vehicle Inventory Explained
+# 🚗 DealerConnect Vehicle Inventory Explained
 
 The Vehicle Inventory module is the heart of the dealership's operations. When explaining this to a technical team or stakeholder, you should focus on three main technical pillars: **Client-Side Filtering**, **Dynamic Aging Calculation**, and **Role-Based Access Control (RBAC)**.
 
@@ -69,7 +69,7 @@ The database stores all relationship keys. A single `Vehicle` row actually links
 ### Key Technical Tour:
 1. **Foreign Key Relations (`@ManyToOne`)**:
    The `vehicles` table doesn't store the literal text "Creta Phantom Black". Instead, it stores `variant_id` and `color_id`.
-   *   This ensures that if Hyundai renames exactly how "Phantom Black" is spelled, the database only needs to update *one* row in the `colors` table, and immediately all 50 black cars in the inventory will display the updated name.
+   *   This ensures that if DealerConnect renames exactly how "Phantom Black" is spelled, the database only needs to update *one* row in the `colors` table, and immediately all 50 black cars in the inventory will display the updated name.
    
 2. **Preventing Duplicates (`existsByVin`)**:
    Every car has a unique 17-character VIN. The `VehicleRepository` utilizes an ultra-fast `existsByVin(String vin)` method. Before doing an `INSERT`, the database confirms the VIN is truly unique across the whole system, guaranteeing zero duplicate inventory collisions.

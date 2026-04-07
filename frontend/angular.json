@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hyundai-dms-ui": {
+    "dealerconnect-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/hyundai-dms-ui",
+            "outputPath": "dist/dealerconnect-ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -51,14 +51,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hyundai-dms-ui:build"
+            "browserTarget": "dealerconnect-ui:build"
           },
           "configurations": {
             "development": {
-              "browserTarget": "hyundai-dms-ui:build:development"
+              "browserTarget": "dealerconnect-ui:build:development"
             },
             "production": {
-              "browserTarget": "hyundai-dms-ui:build:production"
+              "browserTarget": "dealerconnect-ui:build:production"
             }
           },
           "defaultConfiguration": "development"

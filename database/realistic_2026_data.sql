@@ -1,9 +1,9 @@
 -- ============================================================
---  HYUNDAI DMS - REALISTIC 2026 DATA OVERHAUL
+--  DEALERCONNECT - REALISTIC 2026 DATA OVERHAUL
 --  Unified script to populate Customers, Leads, Bookings, 
 --  and Vehicles with realistic 2026 records.
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. Refresh Basic Reference Data
@@ -24,11 +24,11 @@ INSERT INTO departments (id, name) VALUES
 -- 2. Employees (Password: Password@123)
 TRUNCATE TABLE employees;
 INSERT INTO employees (id, employee_code, first_name, last_name, email, phone, password_hash, department_id, role_id, date_of_join) VALUES 
-(1, 'EMP001', 'S', 'GIRISH KUMAR', 'admin@hyundaidms.in', '9876543210', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 1, 1, '2020-01-15'),
-(2, 'EMP002', 'Priya', 'Sharma', 'sales.mgr@hyundaidms.in', '9876543211', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 2, '2020-03-10'),
-(3, 'EMP003', 'Rahul', 'Verma', 'rahul.sales@hyundaidms.in', '9876543212', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2021-06-01'),
-(4, 'EMP004', 'Anita', 'Desai', 'anita.sales@hyundaidms.in', '9876543213', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2021-08-15'),
-(8, 'EMP008', 'Karthik', 'Nair', 'karthik.sales@hyundaidms.in', '9876543217', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2023-01-05');
+(1, 'EMP001', 'S', 'GIRISH KUMAR', 'admin@dealerconnect.com', '9876543210', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 1, 1, '2020-01-15'),
+(2, 'EMP002', 'Priya', 'Sharma', 'sales.mgr@dealerconnect.com', '9876543211', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 2, '2020-03-10'),
+(3, 'EMP003', 'Rahul', 'Verma', 'rahul.sales@dealerconnect.com', '9876543212', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2021-06-01'),
+(4, 'EMP004', 'Anita', 'Desai', 'anita.sales@dealerconnect.com', '9876543213', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2021-08-15'),
+(8, 'EMP008', 'Karthik', 'Nair', 'karthik.sales@dealerconnect.com', '9876543217', '$2a$10$uHYn5GiNxBxHgyp3hxNA9eqHc2Puhy6NniF.C/gWZgqjdnKlRjyLW', 2, 3, '2023-01-05');
 
 -- 3. Customers (45 Records with Address Data)
 TRUNCATE TABLE customers;

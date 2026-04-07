@@ -1,4 +1,4 @@
-# 👥 Hyundai DMS Employee Management Explained
+# 👥 DealerConnect Employee Management Explained
 
 When explaining the Employee module, the focus shifts entirely from data processing (like the Dashboard) to **Data Security, Role-Based Access Control (RBAC), and Human Resources Policy Enforcement**. 
 

@@ -71,7 +71,7 @@ import { environment } from '../../../../environments/environment';
         <div class="brand-header">
           <div class="brand-logo">H</div>
           <h1>Apply for Dealer Access</h1>
-          <p>Register your dealership to join the Hyundai DMS network</p>
+          <p>Register your dealership to join the DealerConnect network</p>
         </div>
 
         <!-- Success State -->
@@ -91,7 +91,7 @@ import { environment } from '../../../../environments/environment';
           <div class="section-label"><mat-icon style="font-size:15px;width:15px;height:15px">store</mat-icon> Dealership Information</div>
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Dealership Name</mat-label>
-            <input matInput formControlName="dealerName" placeholder="e.g. Hyundai Bangalore North">
+            <input matInput formControlName="dealerName" placeholder="e.g. DealerConnect Bangalore North">
             <mat-error *ngIf="f['dealerName'].hasError('required')">Required</mat-error>
           </mat-form-field>
 

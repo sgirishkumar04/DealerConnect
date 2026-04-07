@@ -1,7 +1,7 @@
 -- ============================================================
---  HYUNDAI DMS - All Data Changes (Session: 22-25 Mar 2026)
+--  DEALERCONNECT - All Data Changes (Session: 22-25 Mar 2026)
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 
 -- ─────────────────────────────────────────────────────────────
 -- PART 1: DATA CLEANUP

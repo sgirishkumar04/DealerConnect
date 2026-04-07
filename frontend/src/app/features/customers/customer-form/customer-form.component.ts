@@ -142,8 +142,8 @@ export class CustomerFormComponent implements OnInit {
     }
     /*
    ### Final Multi-Tenant State
-- **Hyundai Chennai Admin**: Sees 85 leads, 39 in-stock vehicles, and historical revenue.
-- **Prachi Kumari (Hyundai Delhi)**: Correctly isolated with 0 leads/revenue.
+- **DealerConnect Chennai Admin**: Sees 85 leads, 39 in-stock vehicles, and historical revenue.
+- **Prachi Kumari (DealerConnect Delhi)**: Correctly isolated with 0 leads/revenue.
 - **Super Admin View**: Correctly shows Girish as the contact for Chennai and Prachi for Delhi. No duplicates.
 - **Dealer Approval**: Fixed GST collisions (empty strings are now NULL) and robust employee code generation (`DLRxx-ADM`).
 - **Customer Code**: Auto-filled in the "New Customer" form based on the dealer (e.g., `CST-DLR05-0001`).

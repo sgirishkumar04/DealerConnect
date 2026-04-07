@@ -19,7 +19,7 @@ import { filter } from 'rxjs/operators';
 
       <!-- Breadcrumb / Page title -->
       <div class="breadcrumb" [class.hidden-mobile]="isMobile && pageTitle.length > 15">
-        <span *ngIf="!isMobile">Hyundai DMS</span>
+        <span *ngIf="!isMobile">DealerConnect</span>
         <mat-icon *ngIf="!isMobile">chevron_right</mat-icon>
         
         <!-- Dashboard Link (clickable only if not on Dashboard) -->
@@ -148,7 +148,7 @@ export class HeaderComponent implements OnInit {
 
     // 3. Try base segment match (for edit pages, etc.)
     const seg = '/' + cleanUrl.split('/')[1];
-    return map[seg] ?? 'Hyundai DMS';
+    return map[seg] ?? 'DealerConnect';
   }
 
   logout() { this.auth.logout(); }

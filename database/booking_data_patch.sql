@@ -1,9 +1,9 @@
 -- ============================================================
---  HYUNDAI DMS – 2025 FULL YEAR BOOKING DATA PATCH (v2)
+--  DEALERCONNECT – 2025 FULL YEAR BOOKING DATA PATCH (v2)
 --  Covers all 12 months with 5 bookings per month (60 total)
 --  Includes lead_id mapped to existing leads 1-50
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ─────────────────────────────────────────────────────────────

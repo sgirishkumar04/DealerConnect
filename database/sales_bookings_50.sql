@@ -1,9 +1,9 @@
 -- ============================================================
---  HYUNDAI DMS - 35 Connected Sales Booking Records
+--  DEALERCONNECT - 35 Connected Sales Booking Records
 --  All FKs: lead (DELIVERED/BOOKED) → booking → vehicle
 --  Booking Statuses: DELIVERED(15), INVOICED(10), ALLOCATED(10)
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ─── Leads (use only customer IDs 1 through 10) ─────────────────

@@ -18,11 +18,22 @@ import { Router } from '@angular/router';
           <h1>Leads & Enquiries</h1>
           <p>Track and manage your sales pipeline</p>
         </div>
-        <button mat-raised-button style="background:var(--hd-blue);color:#fff"
-                *ngIf="canCreate"
-                (click)="router.navigate(['/leads/new'])">
-          <mat-icon>add</mat-icon> New Lead
-        </button>
+        <div style="display:flex;gap:12px;align-items:center">
+          <mat-button-toggle-group [(ngModel)]="viewMode" style="height:36px; border-radius:8px; overflow:hidden">
+            <mat-button-toggle value="LIST" matTooltip="Table View">
+              <mat-icon style="font-size:20px; vertical-align:middle">table_rows</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="KANBAN" matTooltip="Kanban View">
+              <mat-icon style="font-size:20px; vertical-align:middle">view_kanban</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+
+          <button mat-raised-button style="background:var(--hd-blue);color:#fff"
+                  *ngIf="canCreate"
+                  (click)="router.navigate(['/leads/new'])">
+            <mat-icon>add</mat-icon> New Lead
+          </button>
+        </div>
       </div>
 
       <!-- Funnel summary chips -->
@@ -37,7 +48,7 @@ import { Router } from '@angular/router';
         </div>
       </div>
 
-      <div class="table-container">
+      <div *ngIf="viewMode === 'LIST'" class="table-container">
         <div class="table-toolbar" style="gap:15px; flex-wrap:wrap">
           <mat-form-field appearance="outline" class="search-field" style="min-width:200px">
             <mat-label>Search leads…</mat-label>
@@ -138,6 +149,13 @@ import { Router } from '@angular/router';
         </table>
         <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
       </div>
+
+      <div *ngIf="viewMode === 'KANBAN'" style="margin-top:20px">
+        <app-leads-kanban [leads]="dataSource.filteredData" 
+                          (statusChange)="handleStatusChange($event)"
+                          (leadSelected)="router.navigate(['/leads', $event.id, 'edit'])">
+        </app-leads-kanban>
+      </div>
     </div>
   `
 })
@@ -145,6 +163,7 @@ export class LeadListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  viewMode: 'LIST' | 'KANBAN' = 'LIST';
   columns = ['number','customer','model','source','assignedTo','status','actions'];
   dataSource = new MatTableDataSource<any>([]);
   loading = false;
@@ -221,7 +240,39 @@ export class LeadListComponent implements OnInit {
     this.applyFilters();
   }
 
+  handleStatusChange(event: {lead: any, newStatus: string}) {
+    const { lead, newStatus } = event;
+    const oldStatus = lead.status;
+    lead.status = newStatus; // Optimistic update
+    
+    // Prepare partial update DTO (LeadRequest equivalent)
+    const updateReq = {
+      leadNumber: lead.leadNumber,
+      customerId: lead.customer?.id,
+      sourceId: lead.source?.id,
+      assignedTo: lead.assignedTo?.id,
+      preferredModelId: lead.preferredModel?.id,
+      preferredVariantId: lead.preferredVariant?.id,
+      preferredColorId: lead.preferredColor?.id,
+      status: newStatus,
+      remarks: lead.remarks,
+      expectedCloseDate: lead.expectedCloseDate
+    };
+
+    this.api.updateLead(lead.id, updateReq).subscribe({
+      next: () => {
+        this.snack.open(`Lead moved to ${newStatus}`, 'OK', { duration: 2000 });
+        this.load(); // Refresh counts
+      },
+      error: () => {
+        lead.status = oldStatus; // Rollback
+        this.snack.open('Failed to update stage', 'Close', { duration: 3000 });
+      }
+    });
+  }
+
   stageClass(s: string): string {
+  
     const map: Record<string, string> = {
       NEW: 'badge-blue', CONTACTED: 'badge-cyan', TEST_DRIVE: 'badge-yellow',
       NEGOTIATION: 'badge-purple', BOOKED: 'badge-green', DELIVERED: 'badge-green', LOST: 'badge-red'

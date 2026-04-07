@@ -20,22 +20,25 @@ import { MatDialogModule }     from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LeadListComponent } from './lead-list/lead-list.component';
 import { LeadFormComponent } from './lead-form/lead-form.component';
+import { LeadsKanbanComponent } from './leads-kanban/leads-kanban.component';
 
 @NgModule({
-  declarations: [LeadListComponent, LeadFormComponent],
+  declarations: [LeadListComponent, LeadFormComponent, LeadsKanbanComponent],
   imports: [
     CommonModule, ReactiveFormsModule, FormsModule,
     RouterModule.forChild([
       { path: '', component: LeadListComponent },
       { path: 'new', component: LeadFormComponent },
-      { path: ':id/edit', component: LeadFormComponent }
+      { path: ':id/edit', component: LeadFormComponent },
     ]),
     MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule,
     MatButtonModule, MatIconModule, MatSelectModule, MatCardModule,
     MatSnackBarModule, MatTooltipModule, MatChipsModule, MatDialogModule, MatProgressBarModule,
-    MatDatepickerModule, MatNativeDateModule, MatButtonToggleModule, MatAutocompleteModule
+    MatDatepickerModule, MatNativeDateModule, MatButtonToggleModule, MatAutocompleteModule,
+    DragDropModule
   ]
 })
 export class LeadsModule {}

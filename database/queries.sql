@@ -1,8 +1,8 @@
 -- ============================================================
---  HYUNDAI DMS – Important Named SQL Queries
+--  DEALERCONNECT – Important Named SQL Queries
 --  Used by backend report endpoints (native/JPQL queries)
 -- ============================================================
-USE hyundai_dms;
+USE dealerconnect;
 
 -- ─────────────────────────────────────────────
 -- Q1: Vehicle Inventory Status Summary

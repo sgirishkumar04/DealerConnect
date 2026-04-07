@@ -3,7 +3,7 @@ import random
 statuses = ['NEW', 'CONTACTED', 'TEST_DRIVE', 'NEGOTIATION', 'BOOKED', 'LOST', 'DELIVERED']
 
 # Generate 15 leads for each status
-print("USE hyundai_dms;")
+print("USE dealerconnect;")
 print("SET FOREIGN_KEY_CHECKS = 0;")
 print("")
 
