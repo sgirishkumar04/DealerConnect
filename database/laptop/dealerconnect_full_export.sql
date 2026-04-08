@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '07cb11f2-1f5d-11f1-8ffa-2970b84a488c:1-5944';
+-- SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '07cb11f2-1f5d-11f1-8ffa-2970b84a488c:1-5944';
 
 --
 -- Current Database: `dealerconnect`
