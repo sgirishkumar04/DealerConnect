@@ -67,7 +67,7 @@ public class EmployeeService {
 
         // Resolve department and role via lazy-initialized repos
         emp.setDepartment(Department.builder().id(req.getDepartmentId()).build());
-        emp.setRole(Role.builder().id(req.getRoleId()).build());
+        emp.getRoles().add(Role.builder().id(req.getRoleId()).build());
         if (req.getManagerId() != null)
             emp.setManager(Employee.builder().id(req.getManagerId()).build());
 
@@ -105,7 +105,8 @@ public class EmployeeService {
         }
         
         emp.setDepartment(Department.builder().id(req.getDepartmentId()).build());
-        emp.setRole(Role.builder().id(req.getRoleId()).build());
+        emp.getRoles().clear();
+        emp.getRoles().add(Role.builder().id(req.getRoleId()).build());
         if (req.getManagerId() != null)
             emp.setManager(Employee.builder().id(req.getManagerId()).build());
         return employeeRepo.save(emp);
@@ -118,10 +119,10 @@ public class EmployeeService {
             .orElseThrow(() -> new RuntimeException("Current user not found"));
 
         boolean isSuperAdmin = DealerContext.isCurrentSuperAdmin();
-        boolean targetIsAdmin = "ADMIN".equals(target.getRole().getName());
+        boolean targetIsAdmin = target.getRoles().stream().anyMatch(r -> "ADMIN".equals(r.getName()));
 
         // 1. Prevent deactivating a Super Admin (Global Policy)
-        if ("SUPER_ADMIN".equals(target.getRole().getName())) {
+        if (target.getRoles().stream().anyMatch(r -> "SUPER_ADMIN".equals(r.getName()))) {
             throw new org.springframework.security.access.AccessDeniedException("Cannot deactivate a Super Admin");
         }
 

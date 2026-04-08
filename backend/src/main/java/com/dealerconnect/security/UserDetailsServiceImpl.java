@@ -23,16 +23,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        // Add the primary role
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + emp.getRole().getName()));
         
-        // Add all granular database permissions
-        if(emp.getRole().getPermissions() != null) {
-            authorities.addAll(emp.getRole().getPermissions().stream()
-                .map(p -> new SimpleGrantedAuthority(p.getName()))
-                .collect(Collectors.toList()));
-        }
+        emp.getRoles().forEach(role -> {
+            // Add the role itself
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+            
+            // Add all granular database permissions
+            if(role.getPermissions() != null) {
+                authorities.addAll(role.getPermissions().stream()
+                    .map(p -> new SimpleGrantedAuthority(p.getName()))
+                    .collect(Collectors.toList()));
+            }
+        });
 
-        return new UserPrincipal(emp, authorities);
+        // Unique authorities check
+        List<SimpleGrantedAuthority> uniqueAuthorities = authorities.stream()
+            .distinct()
+            .collect(Collectors.toList());
+
+        return new UserPrincipal(emp, uniqueAuthorities);
     }
 }

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Booking {
+public class Booking extends AbstractAuditable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -90,16 +90,6 @@ public class Booking {
     @Column(columnDefinition = "TEXT")
     private String remarks;
 
-    @Builder.Default
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Builder.Default
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() { this.updatedAt = LocalDateTime.now(); }
 
     public enum BookingStatus { BOOKED, ALLOCATED, INVOICED, DELIVERED, CANCELLED }
 }

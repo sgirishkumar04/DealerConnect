@@ -7,16 +7,18 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Set;
+import java.util.HashSet;
+
 @Entity
 @Table(name = "employees",
     indexes = {
         @Index(columnList = "department_id"),
-        @Index(columnList = "role_id"),
         @Index(columnList = "is_active")
     })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Employee {
+public class Employee extends AbstractAuditable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -42,9 +44,14 @@ public class Employee {
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "employee_roles",
+        joinColumns = @JoinColumn(name = "employee_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dealer_id")
@@ -75,14 +82,7 @@ public class Employee {
     @Column(name = "is_locked")
     private Boolean isLocked = false;
 
-    @Builder.Default
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "expiry_date")
+    private LocalDate expiryDate;
 
-    @Builder.Default
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() { this.updatedAt = LocalDateTime.now(); }
 }

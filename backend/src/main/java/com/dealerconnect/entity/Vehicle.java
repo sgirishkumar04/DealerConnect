@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Vehicle {
+public class Vehicle extends AbstractAuditable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

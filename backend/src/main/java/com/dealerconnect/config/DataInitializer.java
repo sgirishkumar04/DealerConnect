@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -145,7 +146,7 @@ public class DataInitializer implements CommandLineRunner {
         superAdmin.setPhone("9000000000");
         superAdmin.setPasswordHash(passwordEncoder.encode(SUPER_ADMIN_PWD));
         superAdmin.setDepartment(adminDept);
-        superAdmin.setRole(saRole);
+        superAdmin.setRoles(Collections.singleton(saRole));
         superAdmin.setDealer(null);
         superAdmin.setIsActive(true);
 
@@ -175,7 +176,7 @@ public class DataInitializer implements CommandLineRunner {
         dealerRepo.findById(1L).ifPresent(defaultDealer -> {
             // Employees
             List<Employee> emps = employeeRepo.findAll().stream()
-                .filter(e -> e.getDealer() == null && !"SUPER_ADMIN".equals(e.getRole().getName()))
+                .filter(e -> e.getDealer() == null && e.getRoles().stream().noneMatch(r -> "SUPER_ADMIN".equals(r.getName())))
                 .toList();
             if (!emps.isEmpty()) {
                 emps.forEach(e -> e.setDealer(defaultDealer));
@@ -277,49 +278,49 @@ public class DataInitializer implements CommandLineRunner {
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP001").firstName("S").lastName("GIRISH KUMAR")
             .email(ADMIN_EMAIL).phone("9000000001")
-            .passwordHash(pwd).department(administration).role(admin)
+            .passwordHash(pwd).department(administration).roles(Collections.singleton(admin))
             .dateOfJoin(LocalDate.of(2020, 1, 1)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP002").firstName("Karthik").lastName("Rajan")
             .email("sm@dealerconnect.com").phone("9000000002")
-            .passwordHash(pwd).department(sales).role(salesMgr)
+            .passwordHash(pwd).department(sales).roles(Collections.singleton(salesMgr))
             .dateOfJoin(LocalDate.of(2020, 3, 15)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP003").firstName("Deepika").lastName("Menon")
             .email("deepika@dealerconnect.com").phone("9000000003")
-            .passwordHash(pwd).department(sales).role(salesExec)
+            .passwordHash(pwd).department(sales).roles(Collections.singleton(salesExec))
             .dateOfJoin(LocalDate.of(2021, 6, 1)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP004").firstName("Rahul").lastName("Verma")
             .email("rahul@dealerconnect.com").phone("9000000004")
-            .passwordHash(pwd).department(sales).role(salesExec)
+            .passwordHash(pwd).department(sales).roles(Collections.singleton(salesExec))
             .dateOfJoin(LocalDate.of(2021, 9, 10)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP005").firstName("Preethi").lastName("Srinivasan")
             .email("preethi@dealerconnect.com").phone("9000000005")
-            .passwordHash(pwd).department(service).role(svcAdvisor)
+            .passwordHash(pwd).department(service).roles(Collections.singleton(svcAdvisor))
             .dateOfJoin(LocalDate.of(2020, 7, 20)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP006").firstName("Murugan").lastName("Selvaraj")
             .email("murugan@dealerconnect.com").phone("9000000006")
-            .passwordHash(pwd).department(service).role(mechanic)
+            .passwordHash(pwd).department(service).roles(Collections.singleton(mechanic))
             .dateOfJoin(LocalDate.of(2019, 11, 11)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP007").firstName("Lakshmi").lastName("Narayanan")
             .email("lakshmi@dealerconnect.com").phone("9000000007")
-            .passwordHash(pwd).department(parts).role(invMgr)
+            .passwordHash(pwd).department(parts).roles(Collections.singleton(invMgr))
             .dateOfJoin(LocalDate.of(2022, 1, 3)).isActive(true).build());
 
         employeeRepo.save(Employee.builder()
             .employeeCode("EMP008").firstName("Vijay").lastName("Anand")
             .email("vijay@dealerconnect.com").phone("9000000008")
-            .passwordHash(pwd).department(finance).role(accounts)
+            .passwordHash(pwd).department(finance).roles(Collections.singleton(accounts))
             .dateOfJoin(LocalDate.of(2020, 5, 18)).isActive(true).build());
 
         log.info("DataInitializer: ✓ Seed roles and employees inserted.");

@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -97,8 +96,6 @@ public class BookingService {
             .remarks(req.getRemarks())
             .status(Booking.BookingStatus.BOOKED)
             .dealer(dealer)
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
 
         vehicle.setStatus(Vehicle.VehicleStatus.ALLOCATED);
@@ -120,7 +117,6 @@ public class BookingService {
         }
 
         booking.setStatus(status);
-        booking.setUpdatedAt(LocalDateTime.now());
         Booking savedBooking = bookingRepo.save(booking);
         auditService.log("Booking", savedBooking.getId(), "UPDATE", oldJson, savedBooking);
         return savedBooking;

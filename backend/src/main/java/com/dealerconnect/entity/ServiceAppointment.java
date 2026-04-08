@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class ServiceAppointment {
+public class ServiceAppointment extends AbstractAuditable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -57,16 +57,6 @@ public class ServiceAppointment {
     @Column(columnDefinition = "TEXT")
     private String remarks;
 
-    @Builder.Default
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Builder.Default
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() { this.updatedAt = LocalDateTime.now(); }
 
     public enum ServiceType { PERIODIC, REPAIR, ACCIDENTAL, WARRANTY, RECALL, GENERAL_CHECKUP }
     public enum AppointmentStatus { SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED }

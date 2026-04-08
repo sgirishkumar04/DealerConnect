@@ -3,7 +3,6 @@ package com.dealerconnect.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
     })
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Lead {
+public class Lead extends AbstractAuditable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -66,16 +65,6 @@ public class Lead {
     @Column(name = "expected_close_date")
     private LocalDate expectedCloseDate;
 
-    @Builder.Default
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-    
-    @Builder.Default
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @PreUpdate
-    public void preUpdate() { this.updatedAt = LocalDateTime.now(); }
 
     public enum LeadStatus {
         NEW, CONTACTED, TEST_DRIVE, NEGOTIATION, BOOKED, LOST, DELIVERED

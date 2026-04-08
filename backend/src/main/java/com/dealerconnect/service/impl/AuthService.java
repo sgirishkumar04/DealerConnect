@@ -39,7 +39,8 @@ public class AuthService {
             throw new DisabledException("The dealership [" + emp.getDealer().getName() + "] has been deactivated by " + saName + ". Please contact support.");
         }
 
-        boolean isSuperAdmin = "SUPER_ADMIN".equals(emp.getRole().getName());
+        boolean isSuperAdmin = emp.getRoles().stream().anyMatch(r -> "SUPER_ADMIN".equals(r.getName()));
+        String roleName = emp.getRoles().isEmpty() ? "USER" : emp.getRoles().iterator().next().getName();
         Long dealerId = (emp.getDealer() != null) ? emp.getDealer().getId() : null;
 
         String token = tokenProvider.generateToken(userDetails, dealerId, isSuperAdmin);
@@ -47,14 +48,16 @@ public class AuthService {
         return AuthResponse.builder()
             .token(token)
             .email(emp.getEmail())
-            .role(emp.getRole().getName())
+            .role(roleName)
             .fullName(emp.getFirstName() + " " + emp.getLastName())
             .employeeId(emp.getId())
             .dealerId(dealerId)
             .isSuperAdmin(isSuperAdmin)
-            .permissions(emp.getRole().getPermissions() != null
-                ? emp.getRole().getPermissions().stream().map(p -> p.getName()).toList()
-                : java.util.List.of())
+            .permissions(emp.getRoles().stream()
+                .flatMap(r -> r.getPermissions().stream())
+                .map(p -> p.getName())
+                .distinct()
+                .toList())
             .build();
     }
 }
