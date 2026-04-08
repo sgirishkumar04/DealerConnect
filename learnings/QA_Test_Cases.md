@@ -1,87 +1,143 @@
-# 🧪 Exhaustive QA Test Cases (Jira Format)
+# 📊 Enterprise Jira Agile Suite: User Stories & QA Scenarios
 ## Project: DealerConnect DMS
-## Type: Zephyr / Xray Test Cases (End-to-End Suite)
-## Status: Ready for Jira Import/Execution
+## Type: Master Product Backlog (Epics, Stories, BDD Criteria & Test Cases)
+## Status: Finalized for Jira Import
 
-This is the exhaustive End-to-End (E2E) Test Suite. It covers all UI/Frontend validations, backend edge cases, database constraints, and module-specific workflows from the Login page to deep Master Data configurations.
-
----
-
-### **Module 1: Authentication & UI Security**
-
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
-| :--- | :--- | :--- | :--- | :--- |
-| **TC-IAM-01:** Verify User Login with Valid Credentials | Highest | Application is deployed; User exists with status `isActive=true`. | 1. Navigate to `/login`.<br>2. Enter valid Email and Password.<br>3. Click 'Sign In'. | User is authenticated. A JWT token is stored securely. The user is redirected to the dashboard based on their role. |
-| **TC-IAM-02:** Verify Account Lockout after 5 Failed Attempts. | High | User account exists and is unlocked. | 1. Navigate to `/login`.<br>2. Enter invalid credentials 5 times.<br>3. Attempt login with correct credentials. | 1-5 tries: "Invalid Credentials" error. <br>6th try: System blocks login and displays "Account Locked." Database `is_locked` flag is `true`. |
-| **TC-IAM-03:** Verify Access Denial for Expired Accounts. | High | Admin sets the user's `expiry_date` to a past date. | 1. Enter valid credentials for the expired account.<br>2. Click 'Sign In'. | Login is denied with message "Account Expired". JWT token is NOT issued. |
-| **TC-IAM-04:** Verify Multi-Role Permission Aggregation. | Medium | User is assigned both "Sales Manager" and "Inventory Staff" roles. | 1. Login with credentials.<br>2. Inspect UI navigation and API calls. | User successfully sees both Sales modules AND Inventory modules. JWT payload contains a flattened array of merged permissions. |
-| **TC-UI-01:** Verify Frontend Form Validation on Login. | Medium | Navigate to `/login`. | 1. Leave Email and Password empty.<br>2. Click 'Login'. | Angular form prevents submission. Required field validation messages appear. |
-| **TC-UI-02:** Verify Sidebar Navigation Rendering based on JWT. | High | User has `LEADS_VIEW` but lacks `PARTS_VIEW`. | 1. Login.<br>2. Check Sidebar. | "Leads" menu item is visible. "Spare Parts" menu item is completely hidden from the DOM. |
-| **TC-UI-03:** Verify Route Guards prevent manual URL access. | High | User logged in without `PARTS_VIEW`. | 1. Manually type `http://localhost:4200/parts` into browser address bar. | Angular AuthGuard redirects user to `/unauthorized` or `/dashboard`. Route cannot be bypassed. |
-| **Edge-IAM-05:** Verify Login Prevention for Deactivated Dealership. | High | Dealer entity status set to `DEACTIVATED`. | 1. Login with correct credentials acting as an employee of the deactivated dealership. | Login rejected. Specific `DisabledException`: "The dealership [Name] has been deactivated." |
+This document strictly follows the industry-standard Agile tracking framework utilized by enterprise software engineering teams. It organizes the DealerConnect DMS into **Epics**, granular **User Stories**, **BDD (Behavior-Driven Development) Acceptance Criteria**, and explicit **QA Test Cases (ready for Zephyr scale / Xray)**.
 
 ---
 
-### **Module 2: Customer Management (Master Data)**
+## 🚀 EPIC: DC-E100: Enterprise Identity & RBAC Security
+**Epic Goal:** Establish a zero-trust security framework with Role-Based Access Control (RBAC) ensuring employees interact only with permitted scopes across multiple dealership branches.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+### 📝 Story: DC-101 - Core Employee Authentication
+**As a** Dealership Employee,
+**I want to** log in securely using my institutional email and encrypted password,
+**So that** I restrict unauthorized access to dealership financial and operational data.
+
+*   **Story Points:** 5 
+*   **Priority:** Highest / Blocker
+*   **Assignee:** Backend / Frontend Teams
+
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Valid Login.** `Given` the user is on the login page, `When` they enter valid credentials, `Then` the system issues an HTTP-Only JWT and routes them to the Dashboard.
+*   **Scenario 2: Account Lockout.** `Given` the user tries to login, `When` they fail 5 consecutive times, `Then` they are locked out and a flag is updated in the database.
+*   **Scenario 3: Deactivated Dealer.** `Given` a user belongs to a deactivated dealership, `When` they attempt to login, `Then` they are rejected with an explicit "Dealership Deactivated" exception regardless of a correct password.
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-CUS-01:** Verify Customer Creation with required fields. | High | Logged in with Customer creation rights. | 1. Go to Customers -> Add New.<br>2. Enter First Name, Last Name, Phone.<br>3. Save. | Customer created. Auto-generated `customer_code` is assigned. |
-| **TC-CUS-02:** Verify Phone Number Regex Validation. | Medium | Add New Customer form open. | 1. Enter an invalid phone (e.g., "123" or text). | UI prevents saving. Shows "Invalid phone number format." |
-| **TC-CUS-03:** Verify duplicate Customer detection mapping. | Medium | Customer exists with Phone "9998887776". | 1. Create a new lead/customer with "9998887776". | System prompts that customer already exists or automatically maps the Lead to the existing Customer ID. |
+| **TC-IAM-001** | Verify Login via valid credentials. | Highest | Valid user exists. | 1. Go to `/login`. <br>2. Enter email & password. | 200 OK. JWT mapped securely. UI route changes securely to `/dashboard`. |
+| **TC-IAM-002** | Verify Account Lockout on 6th attempt. | High | Valid user exists. | 1. Fail login 5 times.<br>2. Try with valid password on 6th time. | Error "Account locked". DB boolean `is_locked` is TRUE. |
+| **TC-IAM-003** | Auto-Expiring JWT Token verification. | Medium | User is logged in. | 1. Wait out the 10-hour JWT expiration.<br>2. Attempt an API call. | 401 Unauthorized via Angular Interceptor, forces user back to `/login`. |
 
 ---
 
-### **Module 3: CRM & Lead Pipeline**
+### 📝 Story: DC-102 - Dynamic Route Filtering via RBAC
+**As a** System Administrator,
+**I want** Angular and Spring Security to sync permission arrays,
+**So that** employees physically cannot view components they lack access to.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+*   **Story Points:** 8
+*   **Priority:** High
+
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Component Hiding.** `Given` a user lacks `LEADS_VIEW` permission, `When` the DOM renders, `Then` the "Leads" menu item is stripped entirely from the Sidebar.
+*   **Scenario 2: Route Guarding.** `Given` a user lacks `PARTS_VIEW`, `When` they manually type `/parts` in the address bar, `Then` the front-end AuthGuard routes them to an Unauthorized page.
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-CRM-01:** Verify Lead Capture Form Validations. | Medium | Lead creation form open. | 1. Attempt to save without selecting a Lead Source or Assigned Executive. | Application rejects the form locally informing user of required dropdowns. |
-| **TC-CRM-02:** Verify Kanban Board visual drag-and-drop. | High | Lead exists in `NEW` state. | 1. Drag Lead card from `NEW` to `CONTACTED`. | API triggers `PATCH`. Lead updates visually. UI SnackBar shows "Lead Updated." |
-| **TC-CRM-03:** Verify prevention of invalid pipeline skips. | Medium | Lead exists in `NEW` state. | 1. Attempt to force transition directly to `DELIVERED` status via API. | Backend rejects the transition. Validation Error: "Invalid state transition." |
-| **Edge-CRM-04:** Verify Automatic Booking Hydration on Lead State BOOKED. | High | Lead exists in `NEGOTIATION`. | 1. Transition Lead to `BOOKED`. | Backend auto-generates a Booking record mapping vehicle variants uniquely. |
-| **Edge-CRM-05:** Verify Cascading Deletion logic when Deleting a Lead. | High | Lead exists with linked Booking, Invoice, and Loan records. | 1. Execute `DELETE /leads/{id}`. | Lead deleted securely. Native JDBC queries cascade and sequentially delete Loan, Invoice, and Booking dependencies averting SQL foreign key errors. |
+| **TC-SEC-004** | Verify AuthGuard blocks direct URL access. | Highest | User lacks admin scopes. | 1. Type `http://localhost:4200/employees` in browser URL. | Angular routes user to `/dashboard` instantly. No API call is made. |
+| **TC-SEC-005** | Verify Backend `@PreAuthorize` API rejection. | Highest | Logged in as base user. | 1. Execute `DELETE /api/v1/employees/1` via Postman targeting another user. | Backend returns explicit `403 Forbidden` response. |
 
 ---
 
-### **Module 4: Vehicle Inventory & Lookups**
+## 🚀 EPIC: DC-E200: Omni-Channel CRM & Lead Pipeline
+**Epic Goal:** Modernize the lead acquisition phase via a unified interactive Kanban process where customer conversion is visually tracked up until Booked/Invoiced status.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+### 📝 Story: DC-201 - Interactive Lead Kanban Board
+**As a** Sales Manager,
+**I want to** see a column-based Kanban interface for leads,
+**So that** I drag-and-drop leads seamlessly from "New" to "Negotiation/Booked".
+
+*   **Story Points:** 5
+*   **Priority:** High
+
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Drag & Drop.** `Given` the Lead Kanban is open, `When` a user drags card "Lead X" to "Contacted", `Then` an automatic `PATCH` API call is fired executing the state transition.
+*   **Scenario 2: State Restrictions.** `Given` a lead is marked `DELIVERED`, `When` a user attempts to drag it back to `NEW`, `Then` the UI rejects the drop action and shows an invalid transition error.
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-INV-01:** Verify Cascading Dropdowns for Vehicle Creation. | High | Reference models and variants exist. | 1. Go to Add Vehicle.<br>2. Select "Hyundai Creta".<br>3. Open Variant dropdown. | Variant dropdown isolates trims mathematically associated with "Creta". |
-| **TC-INV-02:** Verify duplicate VIN constraint is enforced. | High | Vehicle with VIN "VIN123XYZ" exists. | 1. Create new vehicle with VIN "VIN123XYZ". | Database unique constraint fires, Controller translates to clean "VIN already registered" API error. |
-| **TC-INV-03:** Verify Lookup Caching Headers. | Low | System running. | 1. Inspect Network Tab.<br>2. Hit `/lookup/vehicle-models`. | API responds with `Cache-Control: max-age` ensuring the frontend caches reference lists aggressively. |
-| **Edge-INV-04:** Verify Vehicle Demolition securely un-allocates active Bookings. | Critical | Vehicle is `ALLOCATED` to Booking X. | 1. Execute `DELETE /vehicles/{id}`. | Vehicle deleted. Booking X `vehicle_id` sets correctly to NULL and Booking status resets safely to `BOOKED` via JDBC hook. |
+| **TC-CRM-001** | Verify Kanban Drag & Drop API patch. | High | Lead in NEW column. | 1. Drag Lead card to CONTACTED column. | UI updates smoothly. Console confirms `PATCH /leads/{id}/status` completed. |
+| **TC-CRM-002** | Verify Dropdown Cascades in Add Lead Form. | Medium | Add Lead dialog open. | 1. Select Model "Creta".<br>2. Open Variant dropdown. | Only Creta variants are visible. Dropdown disabled if no model picked. |
+| **TC-CRM-003** | Verify Guest Customer hydration during Lead creation. | Medium | New customer. | 1. Fill out lead without hitting "search existing customer". | Backend automatically generates a `Customer` entity linking it to the newly formed `Lead`. |
 
 ---
 
-### **Module 5: Sales, Bookings & Financials**
+## 🚀 EPIC: DC-E300: Live Inventory & Service Workflow Automation
+**Epic Goal:** Prevent double-booking via real-time vehicular state-machines and isolate mechanical Service Workloads strictly by dealership branch.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+### 📝 Story: DC-301 - Inventory VIN Protection & Allocation Rules
+**As an** Inventory Clerk,
+**I want** strict database constraints on Vehicle Identification Numbers,
+**So that** two dealerships cannot mistakenly ingest the exact same vehicle into stock.
+
+*   **Story Points:** 3
+*   **Priority:** High
+
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Global VIN Tracking.** `Given` a vehicle exists with VIN "123", `When` another user attempts to add VIN "123", `Then` a database constraint fires blocking it.
+*   **Scenario 2: Automated Allocation.** `Given` a vehicle is "IN_STOCK", `When` it gets linked to a "BOOKED" transaction, `Then` its internal state immediately mutations to "ALLOCATED".
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-SLS-01:** Verify accurate 'On-Road Price' UI Calculation. | Highest | Logged in as Sales Exec. Booking Form open. | 1. Enter: Ex-Showroom: 1000, Discount: 50, Accessories: 100, Taxes: 10.<br>2. Check UI real-time total block. | Client-side reactive form calculates sum dynamically before API submission exactly to 1060.00. |
-| **TC-SLS-02:** Verify negative numbers are blocked in Financials. | High | Booking form open. | 1. Type "-500" into Discount or Accessories column. | Angular prevents negative numerical input, rejecting submission. |
-| **TC-SLS-03:** Verify Vehicle Allocation shifts status correctly. | High | Vehicle #99 is `IN_STOCK`. Booking #55 is created. | 1. Allocate Vehicle #99 to Booking #55. | Vehicle #99 status automatically changes from `IN_STOCK` to `ALLOCATED` shielding it from double-sales. |
-| **TC-SLS-04:** Verify Invoice Generation locks financial mutations. | High | Booking #55 is `ALLOCATED`. | 1. Generate Invoice.<br>2. Attempt to `PUT /bookings/{id}` modifying `discount`. | System rejects the API update: "Cannot alter financials, booking is already INVOICED." |
-| **Edge-SLS-05:** Verify automatic Guest Customer provisioning. | Medium | API Booking creation missing `customerId`. | 1. Provide only `customerName` "John Smith" via API POST. | Intercepts missing ID. Injects a new Customer entity mapping the relationship silently. |
+| **TC-INV-001** | Enforce Unique VIN across network. | Blocker | Vehicle with VIN `XXX` in DB. | 1. API: `POST /vehicles` with VIN `XXX`. | 400 Bad Request. Controller catches JDBC DataIntegrityViolation and returns "VIN exists". |
+| **TC-INV-002** | Verify Auto-Allocation from Booking link. | High | Vehicle #5 is IN_STOCK. | 1. Create a Booking attaching Vehicle #5. | Vehicle #5 `status` column automatically shifts to `ALLOCATED` via a core business service wrapper. |
 
 ---
 
-### **Module 6: Spare Parts & Workshop Operations**
+### 📝 Story: DC-302 - Multi-Tenant Service Workload Isolation
+**As a** Network Administrator,
+**I want** Service Job Cards isolated tightly via JWT tenant variables,
+**So that** a mechanic in Chennai cannot see or modify the open Job Cards of a mechanic in Mumbai.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Tenant Injection.** `Given` a local admin views Service Appointments, `When` the SQL queries run, `Then` they are automatically injected with `AND dealer_id = X` intercepting all reads/writes.
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-PRT-01:** Verify Spare Part unique part number enforcement. | Medium | Part "P123" exists. | 1. Add new Spare Part using "P123". | API rejects duplicate part saving local UI duplication. |
-| **TC-SRV-01:** Verify Workshop Load visibility isolation. | High | User A is in Dealer 1. | 1. View Service Appointments calendar. | Only vehicles assigned to Dealer 1 show on the workflow. |
-| **TC-SRV-02:** Verify Appointment status progression. | Low | Appointment is `SCHEDULED`. | 1. Move status via UI dropdown to `COMPLETED`. | Status transitions successfully update DB and UI immediately refreshes grid view. |
+| **TC-SRV-001** | Verify cross-dealer Job Card containment. | Highest | 1 DB holds Dealer A and B Job Cards. | 1. Login to Dealer A. Go to Service Jobs. | List strictly returns Dealer A vehicles. `GET /jobs/dealer/A` |
 
 ---
 
-### **Module 7: Enterprise Audit & Dashboarding**
+## 🚀 EPIC: DC-E400: Enterprise Analytics & Global Dashboards
+**Epic Goal:** Present real-time KPIs through highly optimized Stored Procedures eliminating computational bottlenecks at the JVM tier.
 
-| Summary (Jira Title) | Priority | Preconditions | Test Steps (Action) | Expected Result (Verification) |
+### 📝 Story: DC-401 - Dashboard Procedural Speed Up
+**As a** General Manager,
+**I want** the analytics dashboard to compute revenue from millions of records in milliseconds,
+**So that** I don't face timeouts scanning historical data.
+
+*   **Story Points:** 13
+*   **Priority:** High
+*   **Assignee:** DBA Team / Analytics
+
+#### **Acceptance Criteria (BDD Approach)**
+*   **Scenario 1: Stored Procedure Logic.** `Given` a dashboard request for "Top Selling Models", `When` the controller resolves, `Then` the JVM does not process logic; instead it invokes `CALL GetTopSellingModels()` pushing math to MySQL natively.
+
+#### **QA execution (Zephyr / Xray Test Cases)**
+
+| TC ID | Summary (Jira Title) | Priority | Preconditions | Test Steps | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-AUD-01:** Verify abstract audit fields are auto-populated. | High | Logged in as user X (ID: 5). | 1. Create a Customer.<br>2. Query database. | `created_by` equals "5", `created_at` timestamp matches exact server time transparently. |
-| **TC-AUD-02:** Verify detailed action logging in `audit_logs` table. | High | Lead exists. | 1. Change Lead status from `TEST_DRIVE` to `NEGOTIATION`. | Immutable log entry appears showing Entity: Lead, Action: UPDATE, Old Value: `TEST_DRIVE`, New Value: `NEGOTIATION`. |
-| **TC-SAD-01:** Verify Super Admin vs Local Admin Chart Scope. | Highest | Super Admin and Local Admin users exist. | 1. Login as Super Admin... verify Top Models Chart.<br>2. Login as Local Admin... verify Top Models Chart. | Super Admin sees Network-wide aggregates across all DBs. Local Admin payload is strictly intercepted by `DealerContext` returning only local data. |
-| **Edge-AUD-03:** Verify Audit Resilience on JSON Serialization Failure. | High | Complex Entity graph triggers StackOverflow during jackson `writeValueAsString`. | 1. Delete hierarchically complex Booking tree. | Service log catches `ObjectMapper` exception smoothly, logs warning, but fundamentally allows business-logic transaction to persist averting systemic deadlock. |
+| **TC-AUD-001** | Verify `GetMonthlyBookings` procedure execution. | Highest | Routine exists on DB Server. | 1. Load Dashboard. | UI charts populate properly. SQL Trace shows `CALL GetMonthlyBookings()` running at ~0.005ms execution speed. |
+| **TC-AUD-002** | Scope-Bypass for Super Admin. | Medium | User is SUPER_ADMIN. | 1. View network charts. | API sends `dealerId = null` to the stored procedure, allowing it to aggregate the parent franchise network natively. |
