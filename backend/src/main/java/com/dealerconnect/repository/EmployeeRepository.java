@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByEmployeeCode(String employeeCode);
     boolean existsByEmployeeCodeAndDealerId(String employeeCode, Long dealerId);
 
-    @EntityGraph(attributePaths = {"role", "department"})
+    @EntityGraph(attributePaths = {"roles", "department"})
     @Query("SELECT e FROM Employee e WHERE (:dealerId IS NULL OR e.dealer.id = :dealerId) AND " +
            "(:search IS NULL OR LOWER(e.firstName) LIKE %:search% OR LOWER(e.lastName) LIKE %:search% OR e.employeeCode LIKE %:search%)")
     Page<Employee> searchAll(@Param("search") String search, @Param("dealerId") Long dealerId, Pageable pageable);
