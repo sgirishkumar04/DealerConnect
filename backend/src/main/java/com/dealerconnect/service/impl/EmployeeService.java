@@ -74,7 +74,7 @@ public class EmployeeService {
         return employeeRepo.save(emp);
     }
 
-    private String generateNextEmployeeCode(Long dealerId) {
+    private String  generateNextEmployeeCode(Long dealerId) {
         String maxCode = employeeRepo.findMaxEmployeeCode(dealerId);
         int nextId = 1;
         if (maxCode != null && maxCode.contains("-")) {
